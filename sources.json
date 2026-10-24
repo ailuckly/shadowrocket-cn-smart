@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0-beta.1",
+  "date": "2026-10-25",
+  "repository": "https://github.com/MetaCubeX/meta-rules-dat",
+  "revision": "45a9c7f0489f8b1c7c3ae09192e2a6caa369a265",
+  "license": "GPL-3.0",
+  "files": [
+    {"name": "geolocation-!cn", "path": "geo/geosite/geolocation-!cn.list", "policy": "PROXY", "sha256": "c8fe8c3614f5eefdec49e83ab922e07a8d8b0bda9a529bc54d05f4a4a93c7b5f"},
+    {"name": "apple", "path": "geo/geosite/apple.list", "policy": "PROXY", "sha256": "72e36464eb8f8fbf29c0c4dac8f61e6acd486083328ac4d7532ac1faee7d6464"},
+    {"name": "microsoft", "path": "geo/geosite/microsoft.list", "policy": "PROXY", "sha256": "12a5666be1579eb4efa837f441759660802298f5619fbebd59fba1bdba31279e"},
+    {"name": "geolocation-cn", "path": "geo/geosite/geolocation-cn.list", "policy": "DIRECT", "sha256": "b89d58b3da7aadc988db1a6c1f8f53acd37a93e35a2107cf9f87b4e637507514"},
+    {"name": "cn-lite", "path": "geo-lite/geosite/cn.list", "policy": "DIRECT", "sha256": "4159891fda53ccf6c84857be717aed17b0e910a91f977abe5d2d016039e4a8dd"}
+  ]
+}
