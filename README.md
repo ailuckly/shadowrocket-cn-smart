@@ -1,126 +1,93 @@
-# Shadowrocket CN Smart
+<div align="center">
 
-面向中国大陆、具备 IPv4 连接的网络环境：**已知国内服务与局域网直连，已知境外服务优先代理，其余流量默认代理。**
+# 🚀 Shadowrocket CN Smart
 
-当前版本：`1.0.0-beta.1`，2026-10-25。这是独立的分流配置，不含节点、不出售订阅，也不是 Shadowrocket 官方项目。
+**国内直连 · 境外代理 · 一个文件，轻松导入**
 
-**Beta 状态：已通过离线生成与规则回归检查，尚未完成本版在 Shadowrocket 原生客户端、iOS/macOS、不同运营商及节点上的实测。不要把静态检查通过理解为无泄漏、全部兼容或地区解锁保证。**
+[![检查](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml/badge.svg)](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml)
+[![版本](https://img.shields.io/badge/version-1.0.0--beta.2-orange?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0-beta.2)
+![模式](https://img.shields.io/badge/Shadowrocket-配置模式-2684FF?style=flat-square)
+[![许可证](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)](LICENSE)
 
-## 下载与使用
+### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0-beta.2/Shadowrocket-CN-Smart-v1.0.0-beta.2.conf)
 
-[下载版本化配置文件](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/Shadowrocket-CN-Smart-v1.0.0-beta.1.conf) · [发布记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases)
+[查看配置](Shadowrocket-CN-Smart-v1.0.0-beta.2.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
 
-1. 先保留原配置，在 Shadowrocket 首页添加自己的合法可用节点/订阅，并选中一个可用节点。
-2. 下载上述 `.conf`，使用 Shadowrocket 的配置导入功能导入；不要导入仓库中的模板或 `data/*.list`。
-3. 选择新配置，确认名称为 `Shadowrocket-CN-Smart-v1.0.0-beta.1.conf`。
-4. 全局路由选择 **配置**。选择“代理”会改变分流行为，选择“直连”也不会实现本文的境外代理策略。
-5. 重新建立连接，按下文检查实际请求日志。更新时使用新版本文件名；旧版留作回滚，不要叠加两个配置。
+</div>
 
-配置约 1.2 MB，已内置规则，不含 `RULE-SET`、`DOMAIN-SET` 或其他运行时远程规则引用。首次下载文件仍需要可用网络。它不是会每天自动更新的在线订阅；更新需下载新版本。
+面向中国大陆日常使用的 **Shadowrocket 分流配置**。规则已内置，下载一个 `.conf` 即可导入，无需运行脚本、安装证书或另外下载规则集。
 
-## 分流行为
+> **生效条件：在 Shadowrocket 中启用本文件，并将「首页 → 全局路由」设为「配置」。** 本文描述的分流策略用于**配置模式**，不是全局代理模式。
+>
+> 本项目不提供节点。请先在首页添加并选中自己的可用节点；Shadowsocks 等节点仍由 Shadowrocket 首页管理，本文件不包含服务器账号或密码。
 
-规则从上到下匹配。`PROXY` 使用首页当前选择的节点；没有自动选区组、负载均衡组，也不重新定义同名 `PROXY` 分组。
+## ✨ 三步开始
 
-| 流量 | 默认行为 |
+1. **下载**：点击上方按钮，保存 `.conf` 文件。
+2. **导入**：在 Shadowrocket 的「配置」页导入并启用该文件。
+3. **连接**：首页选择可用节点，将全局路由设为 **配置**，开启连接。
+
+更新时下载新版本并重新导入即可。普通用户只需要根目录中的一个 `.conf`，无需下载整个仓库。
+
+## 🧭 它会怎样分流？
+
+| 流量 | 策略 |
 | --- | --- |
-| 路由器、NAS、打印机、私有地址和本地域名 | 本地直连，私有网段同时从 TUN 旁路 |
-| 国内 DNS 引导、少数系统联网检测域名 | 精确直连例外 |
-| ChatGPT、Claude、Gemini、Grok、Copilot 等境外 AI 及已列出的登录服务 | 代理 |
-| Apple、Microsoft、Google 与已列出的境外服务 | 代理，优先于国内列表 |
-| 微信、淘宝、支付宝、京东、B 站、抖音、国内银行及已列出的国内 AI | 直连 |
-| 已有目标 IP 被客户端 GeoIP 库判定为 CN，且未命中更早规则 | 直连；不为未知域名额外发起 GeoIP 匹配用 DNS 查询 |
-| 未匹配的域名/其他 IP 流量 | 代理 |
+| 已收录的国内网站、支付、社交、视频及国内 AI 服务 | 🟢 直连 |
+| 局域网设备与本地域名 | 🟢 直连 |
+| 已收录的境外 AI、Google、开发平台和境外服务 | 🔵 使用首页节点 |
+| Apple、Microsoft 的已收录服务域名 | 🔵 使用首页节点，少数联网检测域名除外 |
+| 未命中更早规则的已有 CN 目标 IP | 🟢 按客户端 GeoIP 数据库直连 |
+| 其余未匹配流量 | 🔵 使用首页节点 |
 
-“国内服务”以域名规则为依据，不等于公司国籍、`.cn` 后缀或服务器的永久所在地。境外域名优先，可避免其中国 CDN 被后面的国内规则改为直连；代价是 Apple 更新、iCloud 等也可能消耗节点流量。
+规则按顺序匹配：**本地网络 → 必要基础服务 → 境外域名 → 国内域名 → CN IP → 代理兜底**。不自动更换节点或出口地区；修改首页节点即可统一切换代理出口。
 
-不整段放行 `.cn`、`.ms` 等公共顶级域名，不根据 User-Agent 或宽泛关键词直接放行，不把所有 SSH 22 端口直连。遗漏的国内域名可能走代理，请用请求日志提出具体域名修正。国内域名和国内 IP 的直连本来就是本配置的预期行为。
+## 🛠 默认配置有哪些优点？本项目补充了什么？
 
-## DNS 与连接失败
+Shadowrocket 默认配置提供常用域名分流、局域网旁路和兜底策略。本项目沿用这些基础，按国内直连、境外服务代理的目标补充规则。
 
-- 默认/备用 DoH 配置为 Google、Cloudflare，并使用 `#proxy` 指向首页节点。
-- 已命中直连规则的域名使用阿里/腾讯 DoH；节点服务器域名也用国内 DoH 引导，避免依赖尚未建立的代理来解析节点。
-- `.local`、`.lan`、`.home.arpa` 显式交给系统 DNS，这是本地服务兼容例外。企业自定义域名可能需要额外设置。
-- 不配置系统 DNS 为公共域名的备用解析器；不启用直连 DNS 失败后改走代理。
-- 节点不支持 UDP 时设为拒绝，不把这部分代理 UDP 静默改为直连。没有添加会伪造 STUN 地址的设置，没有默认禁用全部 QUIC。
-- 默认关闭本配置的 IPv6 支持。IPv6-only/NAT64 网络不在默认适用范围，需要专门调整和实测；这不等于在操作系统层面永久禁用了 IPv6。
+| 默认配置的基础能力 | 本项目的保留或补充 |
+| --- | --- |
+| 常用域名规则、CN GeoIP 与最终代理兜底 | 保留分层结构，扩充国内/境外域名覆盖；GeoIP 使用 `no-resolve`，不为匹配它额外解析未知域名 |
+| 局域网旁路与私有 IP 直连 | 保留本地通信能力，补充本地域名和地址范围 |
+| Apple Intelligence、Copilot 等专用代理规则 | 扩充境外 AI、登录及开发服务，统一跟随首页节点 |
+| 节点不支持 UDP 时拒绝转发 | 保留，不设置代理 UDP 自动直连回退 |
+| 系统 DNS 与 IPv6 支持，方便适配系统环境 | 本项目改为分离的代理/直连 DoH，默认面向具备 IPv4 连接的网络 |
 
-DoH 加密的是到解析服务的传输，并不对解析服务提供商隐藏查询。节点引导、解析器自身引导、局域网例外和系统行为也不能等同于“零 DNS 暴露”。应用自带 DoH、HTTPDNS、直接连接 IP、其他 VPN/网络扩展可能改变匹配结果，需实测。
+以上对照以 **Shadowrocket 2.2.92 随应用提供的 `default.conf`** 为基准，其他版本可能不同。本项目不是官方配置：它将已收录的 Apple、Microsoft 服务优先代理，会比偏向这些服务直连的配置消耗更多节点流量。
 
-`FINAL,PROXY` 和 UDP 拒绝策略**不是操作系统级断网保护开关**。退出 Shadowrocket、断开 VPN 或隧道崩溃后，不能靠本文件阻止其他网络流量。
+### 本项目额外提供
 
-## 导入后的检查清单
+- **单文件离线规则**：约 1.2 MB，导入后不依赖远程规则下载；更新随新版本发布。
+- **分离 DNS**：默认/备用 DoH 经首页节点，国内直连与节点引导使用国内 DoH，本地域名交给系统处理。
+- **可复现版本**：固定规则来源、校验快照并检查生成结果；每次发布使用独立文件名。
+- **轻量使用方式**：没有复杂策略组、重写脚本或 HTTPS 解密设置，只做分流。
 
-在 Shadowrocket 的连接/请求记录中查看**具体请求的命中规则、策略和节点**，不要只看首页显示的节点，也不要只看一个测速网站。
+## 🤝 规则来源与致谢
 
-- [ ] 淘宝、微信、银行、B 站：实际业务请求为 `DIRECT`；页面里的第三方境外资源可能为 `PROXY`。
-- [ ] Gemini、Google 登录、ChatGPT、Claude：相应域名为 `PROXY`，出口跟随同一个首页节点；网页能否使用还取决于服务资格和出口 IP。
-- [ ] 路由器与 NAS：按设备实际地址访问，系统路由走本地网卡，而非远端节点。
-- [ ] 切换 Wi-Fi/蜂窝网络、断开重连后，再检查路由、DNS、IPv6 和出口。
-- [ ] 如果需要验证故障时行为，保持隧道开启，在可恢复的测试环境中使测试节点不可达，确认原本的代理请求失败而不是直连；不要在敏感会话中试验。
-- [ ] 游戏、视频会议、语音通话、推送、iCloud、企业 VPN/内网分别实测，不从网页测试推断全部应用兼容。
+| 来源 | 本项目使用的内容 |
+| --- | --- |
+| [Shadowrocket](https://apps.apple.com/us/app/shadowrocket/id932747118) | 参考随应用提供的默认配置结构与基础策略 |
+| [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat) | 当前直接采用的国内、境外、Apple 和 Microsoft 域名快照 |
+| [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) | 经 MetaCubeX 的 geo-lite 集合引用的国内基础规则来源 |
+| [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community)、[Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat) | 上游域名分类与数据生态 |
 
-本仓库自动检查的是配置文本、模板生成一致性、规则顺序、域名样例和本地地址范围；**不会模拟 Shadowrocket 的原生解析器、DNS、SNI、GeoIP 数据库或操作系统网络栈**。
+域名数据由上游社区维护；本项目负责策略编排、必要域名补充、格式转换、去重与验证。详细来源、许可与构建方法统一放在 [维护目录](.maintainer/README.md)，不影响直接下载使用。
 
-## 常见问题
+## 📌 使用范围
 
-### Gemini 提示“不支持此地区”
+当前为 **beta 测试版**，已提供静态检查，尚未完成不同设备、客户端版本及运营商的全面实测。默认面向具备 IPv4 连接的网络；IPv6-only 网络需要另行适配。
 
-先看 `gemini.google.com`、Google 登录与相关 API 的实际策略。若已经通过预期节点，提示本身不能证明漏代理；出口 IP 的地区识别、账号资格及会话状态也需要排查。保持登录链路与 AI 使用同一个稳定、符合服务要求的出口，必要时用新会话作对照。配置不能改变服务的资格政策，也不保证任何名为“家宽”的节点可用。以 [Google 的 Gemini 可用地区与资格说明](https://support.google.com/gemini/answer/13575153)为准。
+域名规则和 GeoIP 不能完全识别每个应用的所有连接，共享 CDN 或应用自带 DNS 可能影响分流。配置不等于匿名或系统级断网保护，也不保证服务的地区可用性。请使用有权使用的节点并遵守适用要求。
 
-### 局域网路由器打不开
+反馈时提供配置版本、目标域名及预期策略即可，**请勿公开节点密码、订阅链接或完整访问日志**。
 
-1. 确认设备处于同一局域网、路由器地址正确；按设备支持情况分别检查 HTTP 与 HTTPS，不要把缺少 HTTPS 服务误判为代理问题。
-2. macOS 检查“系统设置 → 隐私与安全性 → 本地网络”中的浏览器权限，参见 [Apple 本地网络权限说明](https://support.apple.com/guide/mac-help/mchla4f49138/mac)。
-3. 检查访客 Wi-Fi 的客户端隔离、路由器管理权限和其他 VPN 路由冲突。本配置的 DIRECT 规则不能替代操作系统授权或路由器权限。
+---
 
-### 节点不允许 SSH 22 端口
+<div align="center">
 
-不要在公共默认配置里加入 `DST-PORT,22,DIRECT`，否则所有目标的 SSH 都绕过代理。
+如果这个配置对你有帮助，欢迎点亮 ⭐，也欢迎提交规则修正。
 
-确实需要直连某台自己的服务器时，在**个人副本**的“个人例外”位置添加以下一种，并替换示例目标：
+本项目原创部分使用 [GPL-3.0](LICENSE)；第三方数据保留其来源与许可。与 Shadowrocket 官方无隶属关系。
 
-```ini
-# 仅该域名的 22 端口；需要客户端支持 AND 规则
-AND,((DOMAIN,ssh.example.com),(DST-PORT,22)),DIRECT
-
-# 若用 IP：下行会使该 IP 的全部端口直连，不只是 SSH
-# IP-CIDR,203.0.113.10/32,DIRECT,no-resolve
-```
-
-直连会让目标看到你的本地网络公网出口。也可以在你管理的服务器上配置另一个 SSH 监听端口，或选择支持所需端口的节点；改端口前应保留现有可用管理连接并确认服务器防火墙设置。仓库不提供或修改服务器端配置。
-
-### 为什么没有去广告、HTTPS 解密、脚本和大量策略组？
-
-本项目只做分流。这些功能会增加误伤、信任证书和维护成本，不是实现国内直连/境外代理的必要条件。首次导入无需安装 CA 证书。用户自定义模块、App 设置或旧证书不会因导入本文件而自动清除，请自行检查。
-
-## 已知边界
-
-- 不存在能对所有设备、应用、账号、运营商和网络都“完美”的单份静态配置。
-- 无法保证代理不可被识别、不可被检测、匿名，或让 AI/流媒体绕过其资格限制；代理运营方、解析服务和网站仍有各自的可见性。
-- 外国应用直接连接中国 IP、共享域名/CDN、内置 HTTPDNS 等情形不能仅靠域名表完全区分。连接到已命中国内地址/域名的流量可能直连，即使发起者是境外应用。
-- 规则来源、域名用途与 GeoIP 都会变化。版本快照换来可复现与离线导入，也意味着需要维护更新。
-- 本版没有把 `100.64.0.0/10` 全段排除，也没有旁路 Shadowrocket 的 Fake-IP 地址段。Tailscale、其他组网软件及企业 VPN 需要单独协调路由，不能保证共存。
-- 使用你有权使用的网络和节点，遵守适用要求与服务条款。不要把本仓库当作安全、匿名或合规保证。
-
-## 维护与贡献
-
-仅需 Python 3.9+，无第三方运行依赖。构建和测试离线完成：
-
-```sh
-python3 scripts/build.py
-python3 scripts/build.py --check
-python3 -m unittest discover -s tests -v
-```
-
-`config.template.conf` 保存本项目策略，`data/` 保存上游原始快照，`sources.json` 固定来源路径、提交和 SHA-256。生成器只接受精确域名与 `+.` 后缀格式，转换为 Shadowrocket 的 `DOMAIN`/`DOMAIN-SUFFIX`，并排除上游的整顶级域直连项。不会把其他客户端的原始列表直接当作 Shadowrocket 规则引用。
-
-更新流程：从 `sources.json` 指定的上游获取同一新提交下的全部快照 → 审查差异与来源许可 → 更新对应 SHA-256、版本和日期 → 修改模板/增加回归样例 → 重新生成并跑测试 → 原生客户端导入实测 → 发布新文件名及 Release。不要覆盖已发布的版本/标签，不要自动信任上游变更。
-
-报告问题请提供版本、系统/客户端版本、网络类型、脱敏后的域名与命中策略、预期行为。**不要提交订阅 URL、节点密码、密钥、Cookie、完整访问日志、账号截图或自己的公网 IP。**
-
-## 来源与许可
-
-本项目使用 GPL-3.0，第三方来源及其原始许可见 [THIRD_PARTY.md](THIRD_PARTY.md) 和 [LICENSE](LICENSE)。域名归类参考 [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat)，并保留原始快照以便复查。
-
-DNS 传输背景可参见 [Google DoH 文档](https://developers.google.com/speed/public-dns/docs/doh)与 [Cloudflare DoH 文档](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/)。配置语法最终以所用版本的 Shadowrocket 客户端实际行为为准；[产品页面](https://apps.apple.com/us/app/shadowrocket/id932747118)不代表对本项目的背书。
+</div>

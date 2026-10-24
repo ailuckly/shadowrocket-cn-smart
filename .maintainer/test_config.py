@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("build", ROOT / "scripts/build.py")
+spec = importlib.util.spec_from_file_location("build", ROOT / ".maintainer/build.py")
 build = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(build)
 
@@ -45,6 +45,14 @@ class ConfigTests(unittest.TestCase):
     def test_generated_file_is_reproducible(self):
         self.assertEqual(self.path.read_bytes(), self.content.encode("utf-8"))
         self.assertIn(self.path.name, (ROOT / "README.md").read_text())
+
+    def test_only_one_user_config(self):
+        self.assertEqual(list(ROOT.glob("*.conf")), [self.path])
+        self.assertFalse((ROOT / "config.template.conf").exists())
+        readme = (ROOT / "README.md").read_text()
+        self.assertIn("全局路由", readme)
+        self.assertIn("配置模式", readme)
+        self.assertNotRegex(readme, r"(?:/Users/|/home/)[^\s/]+/")
 
     def test_no_unsupported_sections_or_remote_dependencies(self):
         self.assertEqual(set(self.sections), {"[General]", "[Rule]", "[Host]"})

@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 import re
 
-ROOT = Path(__file__).resolve().parents[1]
+SOURCE = Path(__file__).resolve().parent
+ROOT = SOURCE.parent
 
 
 def domain_rule(value, policy):
@@ -24,7 +25,7 @@ def domain_rule(value, policy):
 
 
 def render():
-    manifest = json.loads((ROOT / "sources.json").read_text())
+    manifest = json.loads((SOURCE / "sources.json").read_text())
     version = manifest["version"]
     if not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-[a-z0-9.]+)?", version):
         raise ValueError("Invalid release version")
@@ -33,7 +34,7 @@ def render():
         name = source["name"]
         if not re.fullmatch(r"[a-z!0-9-]+", name):
             raise ValueError("Invalid source name")
-        raw = (ROOT / "data" / f"{name}.list").read_bytes()
+        raw = (SOURCE / "data" / f"{name}.list").read_bytes()
         if hashlib.sha256(raw).hexdigest() != source["sha256"]:
             raise ValueError(f"Checksum mismatch: {name}; review upstream before updating lock")
         values = raw.decode("utf-8").splitlines()
@@ -45,7 +46,7 @@ def render():
             if source["policy"] == "DIRECT" and value.startswith("+.") and "." not in value[2:]:
                 continue
             groups[source["policy"]].add(rule)
-    text = (ROOT / "config.template.conf").read_text(encoding="utf-8")
+    text = (SOURCE / "template.conf").read_text(encoding="utf-8")
     text = text.replace("{{VERSION}}", version).replace("{{DATE}}", manifest["date"])
     for policy, rules in groups.items():
         suffixes = {r.split(",")[1] for r in rules if r.startswith("DOMAIN-SUFFIX,")}
@@ -76,7 +77,7 @@ def main():
     path, content = render()
     if args.check:
         if not path.exists() or path.read_bytes() != content.encode("utf-8"):
-            raise SystemExit("Generated config is missing or stale; run python3 scripts/build.py")
+            raise SystemExit("Generated config is missing or stale; run python3 .maintainer/build.py")
     else:
         path.write_bytes(content.encode("utf-8"))
     print(f"{'Checked' if args.check else 'Built'} {path.name}: {len(content.encode('utf-8')):,} bytes")
