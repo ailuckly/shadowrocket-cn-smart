@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Shadowrocket CN Smart 使用教程：下载单文件离线规则、导入并启用、使用配置模式。">
+  <title>Shadowrocket CN Smart · 三步导入指南</title>
+  <style>
+    :root { color-scheme: light; --ink:#172934; --muted:#52656e; --line:#dce5e6; --blue:#1d5fd1; --teal:#087762; --paper:#f5f7f5; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif; line-height:1.8; -webkit-font-smoothing:antialiased; }
+    a { color:var(--blue); text-underline-offset:4px; }
+    a:focus-visible { outline:3px solid #e09616; outline-offset:5px; border-radius:3px; }
+    .wrap { width:min(1100px,calc(100% - 64px)); margin:auto; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:25px 0; border-bottom:1px solid var(--line); font-size:13px; }
+    .brand { font-weight:750; letter-spacing:.02em; }
+    .brand b { color:var(--teal); margin-right:8px; }
+    .draft { border:1px solid #d0dcd8; border-radius:99px; padding:3px 12px; color:var(--muted); font-size:12px; white-space:nowrap; }
+    .hero { padding:57px 0 38px; display:grid; grid-template-columns:1.7fr 1fr; gap:48px; align-items:center; }
+    .eyebrow { margin:0 0 15px; font-size:12px; font-weight:750; letter-spacing:.14em; color:var(--teal); }
+    h1 { margin:0 0 22px; font-size:52px; line-height:1.22; letter-spacing:-.045em; font-weight:780; }
+    h1 span { color:var(--teal); }
+    .lead { max-width:580px; margin:0 0 23px; color:var(--muted); font-size:16px; }
+    .actions { display:flex; flex-wrap:wrap; align-items:center; gap:20px; }
+    .button { display:inline-flex; align-items:center; justify-content:center; background:var(--ink); color:white; border-radius:8px; padding:11px 21px; text-decoration:none; font-weight:650; font-size:14px; }
+    .text-link { font-size:13px; }
+    .features { display:flex; flex-wrap:wrap; gap:10px 20px; margin-top:21px; color:var(--muted); font-size:12px; }
+    .features span::before { content:"✓"; color:var(--teal); padding-right:6px; font-weight:800; }
+    .route-card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px; box-shadow:0 12px 38px #173d3010; }
+    .route-card .caption { margin:0 0 17px; color:var(--muted); font-size:12px; }
+    .route-row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:17px 0; border-top:1px solid #edf0ef; font-size:14px; }
+    .route-row strong { display:block; font-size:15px; }
+    .route-row small { display:block; color:var(--muted); font-size:11px; }
+    .pill { padding:4px 10px; border-radius:5px; white-space:nowrap; font-size:12px; font-weight:750; }
+    .direct { color:#076b57; background:#e3f3ec; }
+    .proxy { color:#1d56b6; background:#eaf0fe; }
+    .route-card footer { margin-top:10px; padding-top:16px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+    .notice { padding:17px 22px; border:1px solid #bdd4cb; border-left:4px solid var(--teal); background:#edf5f0; border-radius:7px; font-size:14px; }
+    .notice strong { color:#076652; }
+    .section { padding:44px 0 0; }
+    .section-head { display:flex; justify-content:space-between; align-items:baseline; gap:20px; margin-bottom:21px; }
+    h2 { font-size:25px; line-height:1.4; margin:0; letter-spacing:-.025em; }
+    .section-head p { color:var(--muted); font-size:12px; margin:0; }
+    .steps { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .step { background:white; border:1px solid var(--line); border-radius:13px; padding:26px 28px; }
+    .step-head { display:flex; align-items:center; gap:13px; margin-bottom:14px; }
+    .num { display:inline-grid; place-items:center; width:35px; height:35px; border-radius:50%; background:#edf3f0; color:var(--teal); font-size:13px; font-weight:800; flex:none; }
+    h3 { font-size:19px; line-height:1.5; margin:0; }
+    p { margin:9px 0; }
+    .step p { font-size:14px; }
+    .file { display:block; margin:17px 0; padding:13px 15px; border:1px dashed #c3d1d5; border-radius:7px; background:#f8faf9; font-size:12px; overflow-wrap:anywhere; }
+    code { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.93em; }
+    .subtle { color:var(--muted); font-size:12px!important; }
+    .path { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:17px 0; font-size:13px; }
+    .path span { background:#edf2f6; border-radius:5px; padding:3px 10px; }
+    .path i { color:#75868d; font-style:normal; }
+    .wide { margin-top:20px; }
+    .mode-content { display:grid; grid-template-columns:.8fr 1.7fr; gap:30px; align-items:start; }
+    .mode-copy ol { margin:12px 0; padding-left:20px; font-size:14px; }
+    .mode-copy li { margin-bottom:9px; padding-left:3px; }
+    figure { margin:0; min-width:0; }
+    figure a { display:block; }
+    figure img { display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:9px; }
+    figcaption { margin-top:9px; font-size:11px; line-height:1.65; color:var(--muted); }
+    .callout { margin-top:17px; padding:11px 13px; background:#f0f4fb; border-radius:6px; font-size:12px!important; color:#334f7b; }
+    .verify { margin-top:22px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .verify article { padding:23px 27px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .verify h3 { font-size:17px; }
+    .checks { list-style:none; padding:0; margin:14px 0 0; }
+    .checks li { position:relative; margin:8px 0; padding-left:20px; font-size:13px; }
+    .checks li::before { content:"□"; position:absolute; left:0; color:var(--teal); font-weight:700; }
+    .verify p { font-size:13px; }
+    .table-scroll { overflow-x:auto; margin-top:20px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    table { border-collapse:collapse; width:100%; min-width:520px; text-align:left; font-size:13px; }
+    th { background:#edf2ef; font-weight:650; }
+    th,td { padding:13px 20px; border-bottom:1px solid #e6edeb; vertical-align:top; }
+    tr:last-child td { border-bottom:0; }
+    .notes { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:27px; padding:24px 0; border-top:1px solid var(--line); }
+    .notes h3 { font-size:15px; }
+    .notes p { color:var(--muted); font-size:12px; line-height:1.9; }
+    .bottom { border-top:1px solid var(--line); padding:22px 0 35px; display:flex; justify-content:space-between; gap:24px; color:var(--muted); font-size:11px; }
+    .bottom p { margin:0; }
+    @media(max-width:760px) { .wrap {width:calc(100% - 36px);} .top {align-items:flex-start;} .hero {grid-template-columns:1fr;gap:25px;padding-top:36px;} h1 {font-size:40px;} .route-card {padding:20px;} .steps,.mode-content,.verify,.notes {grid-template-columns:1fr;} .step {padding:22px;} .section-head {display:block;} .section-head p {margin-top:8px;} .bottom {flex-direction:column;gap:8px;} .mode-content {gap:20px;} .notes {gap:16px;} }
+    @media print { body {background:#fff;} .wrap {width:100%;} .top {padding-top:0;} .hero {padding:20px 0;gap:25px;} h1 {font-size:36px;} .section {padding-top:24px;} .step,.verify article,.route-card {box-shadow:none;break-inside:avoid;} a {color:inherit;} .section-head {break-after:avoid;} .bottom {padding-bottom:0;} }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b>↗</b> SHADOWROCKET CN SMART</div>
+    <span class="draft">使用教程 · v1.0.0-beta.2</span>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <p class="eyebrow">QUICK START / 单文件导入指南</p>
+        <h1>一个配置文件。<br><span>让流量，各走其路。</span></h1>
+        <p class="lead">面向中国大陆日常网络的 Shadowrocket（小火箭）分流配置。国内服务优先直连，境外服务使用你选择的节点。</p>
+        <div class="actions">
+          <a class="button" href="https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0-beta.2/Shadowrocket-CN-Smart-v1.0.0-beta.2.conf">下载配置文件 ↓</a>
+          <a class="text-link" href="#start">先看三步教程 →</a>
+        </div>
+        <div class="features"><span>单文件离线规则</span><span>无需安装证书</span><span>使用首页节点</span></div>
+      </div>
+      <aside class="route-card" aria-label="分流概览">
+        <p class="caption">配置模式 / 按规则选择路径</p>
+        <div class="route-row"><div><strong>国内服务 · 本地网络</strong><small>已收录域名与本地地址</small></div><span class="pill direct">直连</span></div>
+        <div class="route-row"><div><strong>境外 AI · 开发服务</strong><small>已收录域名优先代理</small></div><span class="pill proxy">首页节点</span></div>
+        <footer>普通用户只需一个 .conf 文件。<br>不需要下载整个仓库，也不需要运行脚本。</footer>
+      </aside>
+    </section>
+    <aside class="notice"><strong>开始前：</strong>你需要已安装的 Shadowrocket 和自己的可用节点。本项目只提供分流规则，不提供节点、订阅或服务器账号。</aside>
+
+    <section class="section" id="start" aria-labelledby="steps-title">
+      <div class="section-head"><h2 id="steps-title">三步，开始使用</h2><p>以 macOS 界面为例 · 配置版本 v1.0.0-beta.2</p></div>
+      <div class="steps">
+        <article class="step">
+          <div class="step-head"><span class="num">01</span><h3>下载 .conf 文件</h3></div>
+          <p>点击上方下载按钮，将配置保存到本地。也可以在项目的 <a href="https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0-beta.2">Release 页面</a>下载对应附件。</p>
+          <code class="file">Shadowrocket-CN-Smart-v1.0.0-beta.2.conf</code>
+          <p class="subtle">文件约 1.2 MB，规则已内置。无需下载 Source code 压缩包；保存后确认扩展名是 .conf，而不是 .txt 或 .html。</p>
+        </article>
+        <article class="step">
+          <div class="step-head"><span class="num">02</span><h3>导入，并启用配置</h3></div>
+          <p>在 Shadowrocket 左侧进入「配置」，点击「导入…」，选择刚下载的文件。导入后，将它设为当前使用的配置。</p>
+          <div class="path"><span>配置</span><i>→</i><span>导入…</span><i>→</i><span>选择 .conf</span></div>
+          <p class="subtle">在「本地文件」中核对版本。界面说明中，复选标记代表正在使用的配置；仅出现在列表里并不等于已经启用。</p>
+        </article>
+      </div>
+      <article class="step wide">
+        <div class="step-head"><span class="num">03</span><h3>选择「配置」模式，再连接节点</h3></div>
+        <div class="mode-content">
+          <div class="mode-copy">
+            <ol>
+              <li>回到「首页」，选择你自己的可用节点。</li>
+              <li>打开「全局路由」，选择<strong>「配置」</strong>。</li>
+              <li>确认连接已开启，再开始访问网站。</li>
+            </ol>
+            <p class="callout">关键区别：「配置」按文件规则分流；「代理」不是本教程使用的分流模式。</p>
+            <p class="subtle">本文件的 PROXY 使用首页节点，不附带自动选节点的策略组。若应用另有回退设置，节点故障时的切换行为还受该设置影响。</p>
+          </div>
+          <figure>
+            <a href="images/routing-mode.jpg" aria-label="查看全局路由真实截图原图"><img src="images/routing-mode.jpg" width="2192" height="1338" alt="Shadowrocket 的全局路由页面，配置选项右侧显示复选标记。"></a>
+            <figcaption>真实界面截图 · Shadowrocket 2.2.92 / macOS · 点击可查看原图。<br>图片仅演示模式入口，不代表 v1.0.0-beta.2 已导入或完成联网验收；图中回退开关状态不是必需设置。</figcaption>
+          </figure>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" aria-labelledby="verify-title">
+      <div class="section-head"><h2 id="verify-title">导入后，核对这几件事</h2><p>能打开网页，不等于每条连接都走对路径</p></div>
+      <div class="verify">
+        <article><h3>先确认三项状态</h3><ul class="checks"><li>正在使用的配置版本与下载版本一致。</li><li>全局路由显示「配置」，不是「代理」或「直连」。</li><li>首页已选中可用节点，连接已开启。</li></ul></article>
+        <article><h3>再核对实际连接</h3><p>分别访问常用国内网站和境外服务，结合连接记录中的目标、命中规则与策略核对结果。</p><p class="subtle">「配置 → 测试规则」可辅助检查规则匹配，但不能代替真实连接测试，也不能证明服务一定可用。</p></article>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">流量类型</th><th scope="col">本版本的预期策略</th></tr></thead>
+          <tbody>
+            <tr><td>本地网络、已收录国内域名</td><td><span class="pill direct">DIRECT</span> 使用本地直连网络</td></tr>
+            <tr><td>已收录境外 AI、Google 与开发平台</td><td><span class="pill proxy">PROXY</span> 使用首页节点</td></tr>
+            <tr><td>已收录 Apple、Microsoft 服务</td><td>优先代理；少数必要联网检测域名直连</td></tr>
+            <tr><td>未命中前置规则的流量</td><td>已有 CN 目标 IP 按 GeoIP 直连，其余代理兜底</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="notes">
+        <article><h3>更新很简单</h3><p>下载新版本文件，重新导入并确认启用。建议先保留上一版本，方便需要时切回。离线规则不会自动获取上游更新；规则更新随项目版本发布。</p></article>
+        <article><h3>清楚边界，放心使用</h3><p>当前为 Beta，默认面向具备 IPv4 连接的网络。规则与 GeoIP 无法保证识别所有连接；节点质量、服务地区与账号条件仍会影响可用性。配置不等于匿名、系统级断网保护或“不可被检测”。</p></article>
+      </div>
+    </section>
+  </main>
+  <footer class="bottom">
+    <p><a href="https://github.com/ailuckly/shadowrocket-cn-smart">ailuckly / shadowrocket-cn-smart</a><br>独立社区项目，与 Shadowrocket 官方无隶属关系。</p>
+    <p>教程更新 · 2026-10-25<br>已核对操作入口；未执行本版本导入与联网验收。反馈请勿附带订阅链接、密码或完整日志。</p>
+  </footer>
+</div>
+</body>
+</html>

@@ -11,7 +11,7 @@
 
 ### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0-beta.2/Shadowrocket-CN-Smart-v1.0.0-beta.2.conf)
 
-[查看配置](Shadowrocket-CN-Smart-v1.0.0-beta.2.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
+[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.0-beta.2.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
 
 </div>
 
