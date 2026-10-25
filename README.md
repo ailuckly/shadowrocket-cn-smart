@@ -5,13 +5,13 @@
 **国内直连 · 境外代理 · 一个文件，轻松导入**
 
 [![检查](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml/badge.svg)](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml)
-[![版本](https://img.shields.io/badge/version-1.0.0--beta.2-orange?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0-beta.2)
+[![版本](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0)
 ![模式](https://img.shields.io/badge/Shadowrocket-配置模式-2684FF?style=flat-square)
 [![许可证](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)](LICENSE)
 
-### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0-beta.2/Shadowrocket-CN-Smart-v1.0.0-beta.2.conf)
+### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0/Shadowrocket-CN-Smart-v1.0.0.conf)
 
-[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.0-beta.2.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
+[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.0.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
 
 </div>
 
@@ -76,7 +76,9 @@ Shadowrocket 默认配置提供常用域名分流、局域网旁路和兜底策�
 
 ## 📌 使用范围
 
-当前为 **beta 测试版**，已提供静态检查，尚未完成不同设备、客户端版本及运营商的全面实测。默认面向具备 IPv4 连接的网络；IPv6-only 网络需要另行适配。
+当前为 **v1.0.0 首个正式发布版本**，已通过静态检查；有效配置与经过单台 macOS 设备短时连通性测试的 beta.2 一致。尚未完成长期稳定性及不同设备、客户端版本、运营商的全面实测。默认面向具备 IPv4 连接的网络；IPv6-only 网络需要另行适配。
+
+**已知现象：**连接开启时切换配置，实测曾出现十几秒本机代理不可用，之后恢复，具体原因尚未确定。更新前请保留旧配置；如持续无法联网，先回退并核查节点与连接记录。
 
 域名规则和 GeoIP 不能完全识别每个应用的所有连接，共享 CDN 或应用自带 DNS 可能影响分流。配置不等于匿名或系统级断网保护，也不保证服务的地区可用性。请使用有权使用的节点并遵守适用要求。
 

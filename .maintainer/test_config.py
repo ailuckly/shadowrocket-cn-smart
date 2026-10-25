@@ -44,7 +44,11 @@ class ConfigTests(unittest.TestCase):
 
     def test_generated_file_is_reproducible(self):
         self.assertEqual(self.path.read_bytes(), self.content.encode("utf-8"))
-        self.assertIn(self.path.name, (ROOT / "README.md").read_text())
+        version = self.path.stem.removeprefix("Shadowrocket-CN-Smart-")
+        download = f"https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/{version}/{self.path.name}"
+        for doc in ["README.md", "docs/README.md", "docs/index.html"]:
+            with self.subTest(doc=doc):
+                self.assertIn(download, (ROOT / doc).read_text())
 
     def test_only_one_user_config(self):
         self.assertEqual(list(ROOT.glob("*.conf")), [self.path])

@@ -4,18 +4,18 @@
 
 面向中国大陆日常网络的 Shadowrocket（小火箭）分流配置：国内服务优先直连，境外服务使用你选择的节点。规则已内置，无需运行脚本或安装证书。
 
-[⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0-beta.2/Shadowrocket-CN-Smart-v1.0.0-beta.2.conf) · [返回项目首页](../README.md)
+[⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0/Shadowrocket-CN-Smart-v1.0.0.conf) · [返回项目首页](../README.md)
 
 > **开始前：**需要已安装的 Shadowrocket 和自己的可用节点。本项目只提供分流规则，不提供节点、订阅或服务器账号。
 >
-> 本教程以 **macOS 上的 Shadowrocket 2.2.92** 界面为例，配置版本为 **v1.0.0-beta.2**。其他系统或客户端版本的入口可能不同。
+> 本教程以 **macOS 上的 Shadowrocket 2.2.92** 界面为例，配置版本为 **v1.0.0**。其他系统或客户端版本的入口可能不同。
 
 ## 01 · 下载 .conf 文件
 
-点击上方下载链接，将文件保存到本地。也可以从 [Release 页面](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0-beta.2) 下载同名附件：
+点击上方下载链接，将文件保存到本地。也可以从 [Release 页面](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0) 下载同名附件：
 
 ```text
-Shadowrocket-CN-Smart-v1.0.0-beta.2.conf
+Shadowrocket-CN-Smart-v1.0.0.conf
 ```
 
 文件约 1.2 MB，规则已内置。普通用户只需要这个文件，无需下载整个仓库或 Source code 压缩包。保存后确认扩展名是 `.conf`，而不是 `.txt` 或 `.html`。
@@ -37,7 +37,7 @@ Shadowrocket-CN-Smart-v1.0.0-beta.2.conf
 
 ![Shadowrocket 全局路由页面：配置选项右侧显示复选标记](images/routing-mode.jpg)
 
-*真实界面截图 · Shadowrocket 2.2.92 / macOS。图片仅演示模式入口，不代表 v1.0.0-beta.2 已导入或完成联网验收；图中回退开关状态不是必需设置。*
+*真实界面截图 · Shadowrocket 2.2.92 / macOS。图片仅演示模式入口，不是当前版本的联网验收截图；图中回退开关状态不是必需设置。*
 
 > **关键区别：**「配置」按文件规则分流；「代理」不是本教程使用的分流模式。
 >
@@ -64,9 +64,11 @@ Shadowrocket-CN-Smart-v1.0.0-beta.2.conf
 
 **更新方式：**下载新版本文件，重新导入并确认启用。建议先保留上一版本，方便需要时切回。离线规则不会自动获取上游更新，规则更新随项目版本发布。
 
-当前为 **Beta**，默认面向具备 IPv4 连接的网络。规则与 GeoIP 无法保证识别所有连接；节点质量、服务地区与账号条件仍会影响可用性。配置不等于匿名、系统级断网保护或“不可被检测”。
+当前为 **v1.0.0**，默认面向具备 IPv4 连接的网络。规则与 GeoIP 无法保证识别所有连接；节点质量、服务地区与账号条件仍会影响可用性。配置不等于匿名、系统级断网保护或“不可被检测”。
 
-教程已核对操作入口；尚未执行本版本导入与联网验收。反馈请提供配置版本、目标域名和预期策略，**不要附带订阅链接、密码或完整日志**。
+静态检查已通过；本版沿用 beta.2 的有效配置，已做单台 macOS 设备短时连通性测试，未完成跨设备或长期稳定性验证。**连接开启时切换配置可能短暂断流；实测曾出现十几秒本机代理不可用后恢复，原因尚未确定。** 如持续无法联网，先切回旧配置，再核查节点与连接记录。
+
+反馈请提供配置版本、目标域名和预期策略，**不要附带订阅链接、密码或完整日志**。
 
 ---
 
