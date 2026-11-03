@@ -27,13 +27,13 @@
 2. **导入**：在 Shadowrocket 的「配置」页导入并启用该文件。
 3. **连接**：首页选择可用节点，将全局路由设为 **配置**，开启连接。
 
-更新时下载新版本并重新导入即可。普通用户只需要根目录中的一个 `.conf`，无需下载整个仓库。
+普通用户只需要根目录中的一个 `.conf`，无需下载整个仓库。
 
-每个 Release 都另附固定文件名 `Shadowrocket-CN-Smart.conf`，地址是 `https://github.com/ailuckly/shadowrocket-cn-smart/releases/latest/download/Shadowrocket-CN-Smart.conf`。下面的链接不随版本变化，手机上点开即可交给 Shadowrocket 导入，之后也能在 App 里更新：
+固定地址不随版本变化：`https://github.com/ailuckly/shadowrocket-cn-smart/releases/latest/download/Shadowrocket-CN-Smart.conf`。把下面的链接复制到 Safari 打开，即可交给 Shadowrocket 导入。导入后在配置页更新这一条，不用重新导入。
 
-```text
-shadowrocket://config/add/https%3A%2F%2Fgithub.com%2Failuckly%2Fshadowrocket-cn-smart%2Freleases%2Flatest%2Fdownload%2FShadowrocket-CN-Smart.conf
-```
+[shadowrocket://config/add/https%3A%2F%2Fgithub.com%2Failuckly%2Fshadowrocket-cn-smart%2Freleases%2Flatest%2Fdownload%2FShadowrocket-CN-Smart.conf](shadowrocket://config/add/https%3A%2F%2Fgithub.com%2Failuckly%2Fshadowrocket-cn-smart%2Freleases%2Flatest%2Fdownload%2FShadowrocket-CN-Smart.conf)
+
+带版本号的文件是该版本的快照。要换成另一版时，下载那个文件并重新导入。建议保留上一版，方便切回。
 
 ## 🧭 它会怎样分流？
 
@@ -87,7 +87,7 @@ Shadowrocket 默认配置提供常用域名分流、局域网旁路和兜底策�
 
 境外流量的出口就是首页当前节点。配置文件只决定分流，不改变该节点的网络类型，也不修改系统语言或时区。目标服务的地区及账号要求由对应服务商决定。
 
-离线规则随项目版本更新。下载新版本后重新导入并启用，建议保留上一版本，方便按需切换。
+离线规则随项目版本更新。用固定地址导入的，在 App 的配置页更新即可。带版本号的文件要换版时，下载后重新导入。
 
 ## 💬 反馈与贡献
 
