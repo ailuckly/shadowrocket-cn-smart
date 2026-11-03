@@ -24,7 +24,7 @@ python3 -m unittest discover -s .maintainer -p 'test_*.py' -v
 
 策略对照以 Shadowrocket **2.2.92** 随应用提供的 `default.conf` 为基准。参考点包括私有网络旁路、域名/GeoIP/FINAL 分层、专用 AI 域名和 UDP 不支持时拒绝转发。没有将客户端二进制或完整默认配置再分发到本仓库。
 
-本项目的主动差异包括分离 DoH、默认 IPv4、境外 Apple/Microsoft 域名优先代理、GeoIP 不额外解析未知域名，以及内置的版本化社区域名快照。它们是本项目的策略选择，不代表官方建议或对所有网络都更优。
+本项目的主动差异包括分离 DoH、默认 IPv4、代理流量关闭 QUIC、境外 Apple/Microsoft 域名优先代理、GeoIP 不额外解析未知域名，以及内置的版本化社区域名快照。它们是本项目的策略选择，不代表官方建议或对所有网络都更优。
 
 ## 规则数据
 
@@ -40,7 +40,7 @@ python3 -m unittest discover -s .maintainer -p 'test_*.py' -v
 
 每个文件的精确来源 URL 由 `https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/<revision>/<path>` 组成；提交、路径和校验值详见 [sources.json](sources.json)。
 
-转换方式：精确域名转为 `DOMAIN`，`+.` 后缀转为 `DOMAIN-SUFFIX`；同策略排序去重、移除顶级域直连项；境外规则置于国内规则之前。同组的后缀规则覆盖重复的精确域名项，跨模板/分组的重复目标保留更早的决策。不会把其他客户端的原始格式直接作为 Shadowrocket 规则引用。
+转换方式：精确域名转为 `DOMAIN`，`+.` 后缀转为 `DOMAIN-SUFFIX`；境外规则置于国内规则之前。同一策略内，后缀覆盖同名精确域名。跨组去重时，同名后缀若与更早的精确规则策略相同，则保留后缀；策略不同则两条都保留，精确规则在前。单标签直连后缀只保留 `cn` 以及百度、搜狐等国内品牌顶级域，继续丢弃 `+.ms`。不会把其他客户端的原始格式直接作为 Shadowrocket 规则引用。
 
 ## 许可与署名
 

@@ -71,11 +71,23 @@ class ConfigTests(unittest.TestCase):
         self.assertNotRegex(self.content, r"(?i)(password|privatekey|private-key|token)\s*=")
         self.assertNotIn("stun-response-ip", self.general)
         self.assertNotIn("[Proxy Group]", self.sections)
-        domain_targets = [r[1] for r in self.rules if r[0] in {"DOMAIN", "DOMAIN-SUFFIX"}]
-        self.assertEqual(len(domain_targets), len(set(domain_targets)))
+        grouped = {}
         for rule in self.rules:
-            if rule[0] == "DOMAIN-SUFFIX" and rule[2] == "DIRECT":
-                self.assertTrue("." in rule[1] or rule[1] in {"local", "lan"})
+            if rule[0] in {"DOMAIN", "DOMAIN-SUFFIX"}:
+                grouped.setdefault(rule[1], []).append(rule)
+        allowed_single = {"local", "lan"} | build.DIRECT_SINGLE_LABELS
+        for name, items in grouped.items():
+            self.assertLessEqual(len(items), 2, name)
+            if len(items) == 2:
+                self.assertEqual({item[0] for item in items}, {"DOMAIN", "DOMAIN-SUFFIX"})
+                self.assertNotEqual(items[0][2], items[1][2])
+                self.assertEqual(items[0][0], "DOMAIN")
+        for rule in self.rules:
+            if rule[0] == "DOMAIN-SUFFIX" and rule[2] == "DIRECT" and "." not in rule[1]:
+                self.assertIn(rule[1], allowed_single)
+        direct_suffixes = {r[1] for r in self.rules if r[0] == "DOMAIN-SUFFIX" and r[2] == "DIRECT"}
+        self.assertIn("cn", direct_suffixes)
+        self.assertNotIn("ms", direct_suffixes)
 
     def test_overseas_services(self):
         domains = """
@@ -108,17 +120,44 @@ class ConfigTests(unittest.TestCase):
         www.gov.cn www.chinamobile.com www.10010.com www.163.com music.163.com
         www.amap.com www.mi.com www.huawei.com www.aliyun.com www.gitee.com
         chat.deepseek.com www.doubao.com www.kimi.com kimi.moonshot.cn
-        dns.alidns.com doh.pub captive.apple.com www.msftconnecttest.com
+        dns.alidns.com doh.pub sm2.doh.pub captive.apple.com www.msftconnecttest.com
+        www.10086.cn mmbiz.qpic.cn thirdwx.qlogo.cn www.feishu.cn www.boc.cn
+        www.189.cn weibo.cn wx1.sinaimg.cn www.quark.cn www.vivo.com www.vivo.com.cn
+        unlisted.example.cn
         """.split()
         for domain in domains:
             with self.subTest(domain=domain):
                 self.assertEqual(self.route_domain(domain), "DIRECT")
 
     def test_unknown_and_suffix_boundaries(self):
-        for domain in ["unlisted.example", "ssh.unlisted.example", "unlisted.example.cn",
-                       "baidu.com.example", "notqq.com", "qq.com.example", "unlisted.ms"]:
+        for domain in ["unlisted.example", "ssh.unlisted.example", "baidu.com.example",
+                       "notqq.com", "qq.com.example", "unlisted.ms", "aka.ms"]:
             with self.subTest(domain=domain):
                 self.assertEqual(self.route_domain(domain), "PROXY")
+
+    def test_push_time_and_mainland_service_exceptions(self):
+        direct = """
+        courier.push.apple.com init.push.apple.com api.push.apple.com
+        time.apple.com time1.apple.com time7.apple.com time.asia.apple.com time.euro.apple.com
+        ocsp.apple.com ocsp2.apple.com crl.apple.com certs.apple.com valid.apple.com
+        www.icloud.com.cn gateway.icloud.com.cn www.apple.com.cn store.apple.com.cn
+        login.partner.microsoftonline.cn contoso.sharepoint.cn partner.outlook.cn
+        outlook.office365.cn management.chinacloudapi.cn portal.azure.cn
+        telemetry.bytedapm.com
+        """.split()
+        still_proxied = """
+        www.icloud.com setup.icloud.com www.apple.com mesu.apple.com appleid.apple.com
+        login.microsoftonline.com www.office.com www.office365.com windowsupdate.com
+        www.bing.com.cn www.google.cn
+        """.split()
+        for domain in direct:
+            with self.subTest(domain=domain):
+                self.assertEqual(self.route_domain(domain), "DIRECT")
+        for domain in still_proxied:
+            with self.subTest(domain=domain):
+                self.assertEqual(self.route_domain(domain), "PROXY")
+        self.assertIn(["DOMAIN-SUFFIX", "doh.pub", "DIRECT"], self.rules)
+        self.assertNotIn(["DOMAIN", "doh.pub", "DIRECT"], self.rules)
 
     def test_lan_and_ip_rules(self):
         for domain in ["localhost", "printer.local", "router.lan", "nas.home.arpa"]:
@@ -127,11 +166,12 @@ class ConfigTests(unittest.TestCase):
                     if r[0] in {"IP-CIDR", "IP-CIDR6"}]
         excluded = [ipaddress.ip_network(s) for s in self.general["tun-excluded-routes"].split(",")]
         for value in ["192.168.1.1", "192.168.255.254", "10.0.0.1", "172.16.0.1",
-                      "172.31.255.254", "127.0.0.1", "169.254.1.2", "::1", "fd00::1", "fe80::1"]:
+                      "172.31.255.254", "127.0.0.1", "169.254.1.2", "100.64.0.1", "100.127.255.254",
+                      "::1", "fd00::1", "fe80::1"]:
             ip = ipaddress.ip_address(value)
             self.assertEqual(next(policy for net, policy in networks if ip in net), "DIRECT")
             self.assertTrue(any(ip in net for net in excluded))
-        for value in ["198.18.0.1", "100.64.0.1", "8.8.8.8", "203.0.113.1", "172.32.0.1"]:
+        for value in ["198.18.0.1", "8.8.8.8", "203.0.113.1", "172.32.0.1"]:
             ip = ipaddress.ip_address(value)
             self.assertFalse(any(ip in net for net in excluded), value)
         self.assertEqual(self.rules[-2], ["GEOIP", "CN", "DIRECT", "no-resolve"])
@@ -139,14 +179,27 @@ class ConfigTests(unittest.TestCase):
     def test_dns_and_no_udp_direct_fallback(self):
         for key in ["dns-server", "fallback-dns-server"]:
             for endpoint in self.general[key].split(","):
-                self.assertTrue(endpoint.startswith("https://"))
-                self.assertTrue(endpoint.endswith("#proxy"))
-        for key in ["direct-dns-server", "proxy-dns-server"]:
-            self.assertTrue(all(url.startswith("https://") for url in self.general[key].split(",")))
+                self.assertTrue(endpoint.startswith("https://"), endpoint)
+                self.assertIn("#proxy", endpoint)
+                self.assertIn("no-h3", endpoint)
+                self.assertNotIn("223.5.5.5", endpoint)
+        direct = self.general["direct-dns-server"].split(",")
+        self.assertEqual(direct[:2], [
+            "https://dns.alidns.com/dns-query#no-h3",
+            "https://doh.pub/dns-query#no-h3",
+        ])
+        self.assertEqual(direct[2:], ["223.5.5.5", "119.29.29.29"])
+        self.assertEqual(self.general["proxy-dns-server"], "223.5.5.5,119.29.29.29")
         self.assertEqual(self.general["dns-direct-fallback-proxy"], "false")
         self.assertEqual(self.general["dns-direct-system"], "false")
+        self.assertEqual(self.general["dns-fallback-system"], "false")
         self.assertEqual(self.general["udp-policy-not-supported-behaviour"], "REJECT")
+        self.assertEqual(self.general["block-quic"], "all-proxy")
         self.assertEqual(self.general["bypass-system"], "false")
+        self.assertEqual(self.general["hijack-dns"], ":53")
+        hosts = dict(line.split(" = ", 1) for line in self.sections["[Host]"])
+        self.assertEqual(hosts["dns.alidns.com"], "223.5.5.5")
+        self.assertEqual(hosts["doh.pub"], "1.12.12.12")
 
     def test_source_conversion_rejects_unknown_formats(self):
         self.assertEqual(build.domain_rule("+.example.com", "DIRECT"), "DOMAIN-SUFFIX,example.com,DIRECT")
@@ -157,6 +210,22 @@ class ConfigTests(unittest.TestCase):
                 build.domain_rule(invalid, "DIRECT")
         with self.assertRaises(ValueError):
             build.domain_rule("example.com", "REJECT")
+
+    def test_suffix_replaces_same_policy_exact_rule(self):
+        collapsed = build.collapse_duplicate_targets([
+            "DOMAIN,doh.pub,DIRECT",
+            "DOMAIN-SUFFIX,doh.pub,DIRECT",
+            "DOMAIN,keep.example,DIRECT",
+            "DOMAIN-SUFFIX,keep.example,PROXY",
+            "DOMAIN-SUFFIX,covered.example,PROXY",
+            "DOMAIN,covered.example,DIRECT",
+        ])
+        self.assertEqual(collapsed, [
+            "DOMAIN-SUFFIX,doh.pub,DIRECT",
+            "DOMAIN,keep.example,DIRECT",
+            "DOMAIN-SUFFIX,keep.example,PROXY",
+            "DOMAIN-SUFFIX,covered.example,PROXY",
+        ])
 
 
 if __name__ == "__main__":

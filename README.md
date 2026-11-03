@@ -5,13 +5,13 @@
 **国内直连 · 境外代理 · 一个文件，轻松导入**
 
 [![检查](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml/badge.svg)](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml)
-[![版本](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0)
+[![版本](https://img.shields.io/badge/version-1.0.1-blue?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.1)
 ![模式](https://img.shields.io/badge/Shadowrocket-配置模式-2684FF?style=flat-square)
 [![许可证](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)](LICENSE)
 
-### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0/Shadowrocket-CN-Smart-v1.0.0.conf)
+### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.1/Shadowrocket-CN-Smart-v1.0.1.conf)
 
-[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.0.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
+[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.1.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
 
 </div>
 
@@ -33,10 +33,11 @@
 
 | 流量 | 策略 |
 | --- | --- |
-| 已收录的国内网站、支付、社交、视频及国内 AI 服务 | 🟢 直连 |
-| 局域网设备与本地域名 | 🟢 直连 |
+| 已收录的国内网站、支付、社交、视频及国内 AI 服务；未被更早规则命中的 `.cn` | 🟢 直连 |
+| 局域网设备、本地域名，以及运营商共享地址 `100.64.0.0/10` | 🟢 直连 |
 | 已收录的境外 AI、Google、开发平台和境外服务 | 🔵 使用首页节点 |
-| Apple、Microsoft 的已收录服务域名 | 🔵 使用首页节点，少数联网检测域名除外 |
+| Apple、Microsoft 的全球服务 | 🔵 使用首页节点 |
+| Apple 推送、校时、证书检查；中国区 iCloud、App Store、世纪互联与 Azure 中国 | 🟢 直连 |
 | 未命中更早规则的已有 CN 目标 IP | 🟢 按客户端 GeoIP 数据库直连 |
 | 其余未匹配流量 | 🔵 使用首页节点 |
 
@@ -51,10 +52,10 @@ Shadowrocket 默认配置提供常用域名分流、局域网旁路和兜底策�
 | 常用域名规则、CN GeoIP 与最终代理兜底 | 保留分层结构，扩充国内/境外域名覆盖；GeoIP 使用 `no-resolve`，不为匹配它额外解析未知域名 |
 | 局域网旁路与私有 IP 直连 | 保留本地通信能力，补充本地域名和地址范围 |
 | Apple Intelligence、Copilot 等专用代理规则 | 扩充境外 AI、登录及开发服务，统一跟随首页节点 |
-| 节点不支持 UDP 时拒绝转发 | 保留，不设置代理 UDP 自动直连回退 |
+| 节点不支持 UDP 时拒绝转发 | 保留，不设置代理 UDP 自动直连回退；代理流量关闭 QUIC，国内直连仍可使用 QUIC |
 | 系统 DNS 与 IPv6 支持，方便适配系统环境 | 本项目改为分离的代理/直连 DoH，默认面向具备 IPv4 连接的网络 |
 
-以上对照以 **Shadowrocket 2.2.92 随应用提供的 `default.conf`** 为基准，其他版本可能不同。本项目不是官方配置：它将已收录的 Apple、Microsoft 服务优先代理，会比偏向这些服务直连的配置消耗更多节点流量。
+以上对照以 **Shadowrocket 2.2.92 随应用提供的 `default.conf`** 为基准，其他版本可能不同。本项目不是官方配置：已收录的全球 Apple、Microsoft 服务优先代理，会比偏向这些服务直连的配置消耗更多节点流量。Apple 推送、校时和证书检查，以及中国区 iCloud、App Store、世纪互联和 Azure 中国保持直连。
 
 ### 本项目额外提供
 
@@ -76,7 +77,9 @@ Shadowrocket 默认配置提供常用域名分流、局域网旁路和兜底策�
 
 ## 📌 使用说明
 
-适用于具备 IPv4 连接的网络，在 Shadowrocket 的 **配置模式** 下生效。请自行准备可用节点；目标服务的地区及账号要求由对应服务商决定。
+适用于具备 IPv4 连接的网络，在 Shadowrocket 的 **配置模式** 下生效。请自行准备可用节点，并在客户端打开「禁用 STUN」。系统或浏览器不要另外指定 DNS，53 端口上的查询由本文件接管。
+
+境外流量的出口就是首页当前节点。配置文件只决定分流，不改变该节点的网络类型，也不修改系统语言或时区。目标服务的地区及账号要求由对应服务商决定。
 
 离线规则随项目版本更新。下载新版本后重新导入并启用，建议保留上一版本，方便按需切换。
 

@@ -8,6 +8,9 @@ import re
 
 SOURCE = Path(__file__).resolve().parent
 ROOT = SOURCE.parent
+# Mainland and domestic brand TLDs from the checked-in snapshots.
+# +.ms is intentionally absent: a single label is not evidence of a direct route.
+DIRECT_SINGLE_LABELS = {"cn", "baidu", "yun", "xihuan", "shouji", "anquan", "sohu"}
 
 
 def domain_rule(value, policy):
@@ -22,6 +25,39 @@ def domain_rule(value, policy):
                    for x in labels)):
         raise ValueError(f"Unsupported upstream domain: {value!r}")
     return f"{'DOMAIN-SUFFIX' if suffix else 'DOMAIN'},{domain},{policy}"
+
+
+def collapse_duplicate_targets(lines):
+    """Resolve repeated domain targets after template rules are placed first.
+
+    A later suffix with the same policy replaces an earlier exact name, so
+    subdomains keep that decision. A later suffix with a different policy stays
+    behind the exact rule. An earlier suffix already covers the apex.
+    """
+    kept = []
+    exact_at = {}
+    suffixes = set()
+    for line in lines:
+        if not line.startswith(("DOMAIN,", "DOMAIN-SUFFIX,")):
+            kept.append(line)
+            continue
+        kind, name, policy = line.split(",")
+        if kind == "DOMAIN-SUFFIX":
+            if name in suffixes:
+                continue
+            if name in exact_at:
+                previous = kept[exact_at[name]]
+                if previous is not None and previous.endswith("," + policy):
+                    kept[exact_at[name]] = None
+                    del exact_at[name]
+            suffixes.add(name)
+            kept.append(line)
+            continue
+        if name in suffixes or name in exact_at:
+            continue
+        exact_at[name] = len(kept)
+        kept.append(line)
+    return [line for line in kept if line is not None]
 
 
 def render():
@@ -42,8 +78,9 @@ def render():
             raise ValueError(f"Empty source: {name}")
         for value in values:
             rule = domain_rule(value, source["policy"])
-            # A country/brand TLD alone is not evidence that every site should bypass the proxy.
-            if source["policy"] == "DIRECT" and value.startswith("+.") and "." not in value[2:]:
+            label = value[2:] if value.startswith("+.") else value
+            if (source["policy"] == "DIRECT" and value.startswith("+.")
+                    and "." not in label and label not in DIRECT_SINGLE_LABELS):
                 continue
             groups[source["policy"]].add(rule)
     text = (SOURCE / "template.conf").read_text(encoding="utf-8")
@@ -57,16 +94,7 @@ def render():
         text = text.replace(marker, "\n".join(sorted(rules)))
     if "{{" in text:
         raise ValueError("Unexpanded template marker")
-    # Keep the earlier decision for duplicate names instead of relying on importer deduplication.
-    seen = set()
-    lines = []
-    for line in text.splitlines():
-        if line.startswith(("DOMAIN,", "DOMAIN-SUFFIX,")):
-            name = line.split(",")[1]
-            if name in seen:
-                continue
-            seen.add(name)
-        lines.append(line)
+    lines = collapse_duplicate_targets(text.splitlines())
     return ROOT / f"Shadowrocket-CN-Smart-v{version}.conf", "\n".join(lines) + "\n"
 
 

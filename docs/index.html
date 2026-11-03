@@ -88,7 +88,7 @@
 <div class="wrap">
   <header class="top">
     <div class="brand"><b>↗</b> SHADOWROCKET CN SMART</div>
-    <span class="draft">使用教程 · v1.0.0</span>
+    <span class="draft">使用教程 · v1.0.1</span>
   </header>
   <main>
     <section class="hero" aria-labelledby="title">
@@ -97,7 +97,7 @@
         <h1>一个配置文件。<br><span>让流量，各走其路。</span></h1>
         <p class="lead">面向中国大陆日常网络的 Shadowrocket（小火箭）分流配置。国内服务优先直连，境外服务使用你选择的节点。</p>
         <div class="actions">
-          <a class="button" href="https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.0/Shadowrocket-CN-Smart-v1.0.0.conf">下载配置文件 ↓</a>
+          <a class="button" href="https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.1/Shadowrocket-CN-Smart-v1.0.1.conf">下载配置文件 ↓</a>
           <a class="text-link" href="#start">先看三步教程 →</a>
         </div>
         <div class="features"><span>单文件离线规则</span><span>无需安装证书</span><span>使用首页节点</span></div>
@@ -112,12 +112,12 @@
     <aside class="notice"><strong>开始前：</strong>你需要已安装的 Shadowrocket 和自己的可用节点。本项目只提供分流规则，不提供节点、订阅或服务器账号。</aside>
 
     <section class="section" id="start" aria-labelledby="steps-title">
-      <div class="section-head"><h2 id="steps-title">三步，开始使用</h2><p>以 macOS 界面为例 · 配置版本 v1.0.0</p></div>
+      <div class="section-head"><h2 id="steps-title">三步，开始使用</h2><p>以 macOS 界面为例 · 配置版本 v1.0.1</p></div>
       <div class="steps">
         <article class="step">
           <div class="step-head"><span class="num">01</span><h3>下载 .conf 文件</h3></div>
-          <p>点击上方下载按钮，将配置保存到本地。也可以在项目的 <a href="https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.0">Release 页面</a>下载对应附件。</p>
-          <code class="file">Shadowrocket-CN-Smart-v1.0.0.conf</code>
+          <p>点击上方下载按钮，将配置保存到本地。也可以在项目的 <a href="https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.1">Release 页面</a>下载对应附件。</p>
+          <code class="file">Shadowrocket-CN-Smart-v1.0.1.conf</code>
           <p class="subtle">文件约 1.2 MB，规则已内置。无需下载 Source code 压缩包；保存后确认扩展名是 .conf，而不是 .txt 或 .html。</p>
         </article>
         <article class="step">
@@ -150,23 +150,24 @@
     <section class="section" aria-labelledby="verify-title">
       <div class="section-head"><h2 id="verify-title">导入后，核对这几件事</h2><p>确认配置、模式和节点，即可开始使用</p></div>
       <div class="verify">
-        <article><h3>先确认三项状态</h3><ul class="checks"><li>正在使用的配置版本与下载版本一致。</li><li>全局路由显示「配置」，不是「代理」或「直连」。</li><li>首页已选中可用节点，连接已开启。</li></ul></article>
+        <article><h3>先确认这几项</h3><ul class="checks"><li>正在使用的配置版本与下载版本一致。</li><li>全局路由显示「配置」，不是「代理」或「直连」。</li><li>首页已选中可用节点，连接已开启。</li><li>已打开「禁用 STUN」。这个开关不在配置文件里。</li><li>系统和浏览器没有另外指定 DNS。</li></ul></article>
         <article><h3>一起完善这个项目</h3><p>使用中遇到问题或发现域名遗漏？欢迎 <a href="https://github.com/ailuckly/shadowrocket-cn-smart/issues/new">提交 Issue</a>，附上配置与客户端版本、目标域名、实际表现和期望策略。</p><p>也欢迎 Fork 项目并 <a href="https://github.com/ailuckly/shadowrocket-cn-smart/pulls">提交 PR</a>，补充规则或改进教程。</p></article>
       </div>
       <div class="table-scroll">
         <table>
           <thead><tr><th scope="col">流量类型</th><th scope="col">本版本的预期策略</th></tr></thead>
           <tbody>
-            <tr><td>本地网络、已收录国内域名</td><td><span class="pill direct">DIRECT</span> 使用本地直连网络</td></tr>
+            <tr><td>本地网络、已收录国内域名、未被更早规则命中的 .cn</td><td><span class="pill direct">DIRECT</span> 使用本地直连网络</td></tr>
             <tr><td>已收录境外 AI、Google 与开发平台</td><td><span class="pill proxy">PROXY</span> 使用首页节点</td></tr>
-            <tr><td>已收录 Apple、Microsoft 服务</td><td>优先代理；少数必要联网检测域名直连</td></tr>
+            <tr><td>Apple、Microsoft 的全球服务</td><td><span class="pill proxy">PROXY</span> 使用首页节点</td></tr>
+            <tr><td>Apple 推送、校时、证书检查；中国区 iCloud、App Store、世纪互联与 Azure 中国</td><td><span class="pill direct">DIRECT</span> 直连</td></tr>
             <tr><td>未命中前置规则的流量</td><td>已有 CN 目标 IP 按 GeoIP 直连，其余代理兜底</td></tr>
           </tbody>
         </table>
       </div>
       <div class="notes">
         <article><h3>更新很简单</h3><p>下载新版本文件，重新导入并确认启用。建议先保留上一版本，方便需要时切回。离线规则不会自动获取上游更新；规则更新随项目版本发布。</p></article>
-        <article><h3>使用说明</h3><p>v1.0.0 适用于具备 IPv4 连接的网络，在 Shadowrocket 的「配置」模式下生效。请自行准备可用节点；目标服务的地区及账号要求由对应服务商决定。</p><p>反馈和贡献时，请勿公开节点密码、订阅链接或完整访问日志。</p></article>
+        <article><h3>使用说明</h3><p>v1.0.1 适用于具备 IPv4 连接的网络，在 Shadowrocket 的「配置」模式下生效。境外流量使用首页节点；代理流量的 QUIC 会关闭并改走 TCP。请自行准备可用节点；目标服务的地区及账号要求由对应服务商决定。</p><p>反馈和贡献时，请勿公开节点密码、订阅链接或完整访问日志。</p></article>
       </div>
     </section>
   </main>
