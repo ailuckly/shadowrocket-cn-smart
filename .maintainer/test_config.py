@@ -49,6 +49,12 @@ class ConfigTests(unittest.TestCase):
         for doc in ["README.md", "docs/README.md", "docs/index.html"]:
             with self.subTest(doc=doc):
                 self.assertIn(download, (ROOT / doc).read_text())
+        readme = (ROOT / "README.md").read_text()
+        self.assertIn(
+            "https://github.com/ailuckly/shadowrocket-cn-smart/releases/latest/download/Shadowrocket-CN-Smart.conf",
+            readme,
+        )
+        self.assertIn("shadowrocket://config/add/", readme)
 
     def test_only_one_user_config(self):
         self.assertEqual(list(ROOT.glob("*.conf")), [self.path])
@@ -144,11 +150,19 @@ class ConfigTests(unittest.TestCase):
         login.partner.microsoftonline.cn contoso.sharepoint.cn partner.outlook.cn
         outlook.office365.cn management.chinacloudapi.cn portal.azure.cn
         telemetry.bytedapm.com
+        cn.pool.ntp.org 2.cn.pool.ntp.org
+        izattime.qcomgeo2.com xtratime.qcomgeo2.com time.xtracloud.net
+        ntservicepack.microsoft.com download.microsoft.com update.microsoft.com
+        download.windowsupdate.microsoft.com dl.delivery.mp.microsoft.com
+        download.jetbrains.com images-cn.ssl-images-amazon.com client.amplifi.com
+        adimages.sina.com.hk oascentral.sina.com.hk lenovo.com.cdn.cloudflare.net
         """.split()
         still_proxied = """
         www.icloud.com setup.icloud.com www.apple.com mesu.apple.com appleid.apple.com
         login.microsoftonline.com www.office.com www.office365.com windowsupdate.com
         www.bing.com.cn www.google.cn
+        pool.ntp.org 0.pool.ntp.org www.microsoft.com windowsupdate.com
+        www.jetbrains.com www.amplifi.com www.sina.com.hk cdn.cloudflare.net
         """.split()
         for domain in direct:
             with self.subTest(domain=domain):
@@ -158,6 +172,16 @@ class ConfigTests(unittest.TestCase):
                 self.assertEqual(self.route_domain(domain), "PROXY")
         self.assertIn(["DOMAIN-SUFFIX", "doh.pub", "DIRECT"], self.rules)
         self.assertNotIn(["DOMAIN", "doh.pub", "DIRECT"], self.rules)
+        suffixes = {}
+        for index, rule in enumerate(self.rules):
+            if rule[0] not in {"DOMAIN", "DOMAIN-SUFFIX"}:
+                continue
+            labels = rule[1].split(".")
+            for start in range(len(labels)):
+                covered = ".".join(labels[start:])
+                self.assertNotIn(covered, suffixes, rule)
+            if rule[0] == "DOMAIN-SUFFIX":
+                suffixes[rule[1]] = index
 
     def test_lan_and_ip_rules(self):
         for domain in ["localhost", "printer.local", "router.lan", "nas.home.arpa"]:
@@ -225,6 +249,32 @@ class ConfigTests(unittest.TestCase):
             "DOMAIN,keep.example,DIRECT",
             "DOMAIN-SUFFIX,keep.example,PROXY",
             "DOMAIN-SUFFIX,covered.example,PROXY",
+        ])
+        with self.assertRaises(ValueError):
+            build.collapse_duplicate_targets([
+                "DOMAIN-SUFFIX,pool.ntp.org,PROXY",
+                "DOMAIN-SUFFIX,cn.pool.ntp.org,DIRECT",
+            ])
+        self.assertEqual(build.collapse_duplicate_targets([
+            "DOMAIN-SUFFIX,covered.example,PROXY",
+            "DOMAIN,covered.example,DIRECT",
+        ]), [
+            "DOMAIN-SUFFIX,covered.example,PROXY",
+        ])
+        self.assertEqual(build.collapse_duplicate_targets([
+            "DOMAIN-SUFFIX,google.dev,PROXY",
+            "DOMAIN,ai.google.dev,PROXY",
+            "DOMAIN-SUFFIX,ai.google.dev,PROXY",
+            "DOMAIN-SUFFIX,cn.pool.ntp.org,DIRECT",
+            "DOMAIN-SUFFIX,pool.ntp.org,PROXY",
+            "DOMAIN-SUFFIX,cn.pool.ntp.org,DIRECT",
+            "DOMAIN-SUFFIX,push.apple.com,DIRECT",
+            "DOMAIN,init-p01st.push.apple.com,PROXY",
+        ], authoritative_suffixes={"cn.pool.ntp.org", "push.apple.com"}), [
+            "DOMAIN-SUFFIX,google.dev,PROXY",
+            "DOMAIN-SUFFIX,cn.pool.ntp.org,DIRECT",
+            "DOMAIN-SUFFIX,pool.ntp.org,PROXY",
+            "DOMAIN-SUFFIX,push.apple.com,DIRECT",
         ])
 
 

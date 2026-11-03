@@ -5,13 +5,13 @@
 **国内直连 · 境外代理 · 一个文件，轻松导入**
 
 [![检查](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml/badge.svg)](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml)
-[![版本](https://img.shields.io/badge/version-1.0.1-blue?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.1)
+[![版本](https://img.shields.io/badge/version-1.0.2-blue?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.2)
 ![模式](https://img.shields.io/badge/Shadowrocket-配置模式-2684FF?style=flat-square)
 [![许可证](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)](LICENSE)
 
-### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.1/Shadowrocket-CN-Smart-v1.0.1.conf)
+### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.2/Shadowrocket-CN-Smart-v1.0.2.conf)
 
-[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.1.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
+[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.2.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
 
 </div>
 
@@ -29,6 +29,12 @@
 
 更新时下载新版本并重新导入即可。普通用户只需要根目录中的一个 `.conf`，无需下载整个仓库。
 
+每个 Release 都另附固定文件名 `Shadowrocket-CN-Smart.conf`，地址是 `https://github.com/ailuckly/shadowrocket-cn-smart/releases/latest/download/Shadowrocket-CN-Smart.conf`。下面的链接不随版本变化，手机上点开即可交给 Shadowrocket 导入，之后也能在 App 里更新：
+
+```text
+shadowrocket://config/add/https%3A%2F%2Fgithub.com%2Failuckly%2Fshadowrocket-cn-smart%2Freleases%2Flatest%2Fdownload%2FShadowrocket-CN-Smart.conf
+```
+
 ## 🧭 它会怎样分流？
 
 | 流量 | 策略 |
@@ -37,7 +43,7 @@
 | 局域网设备、本地域名，以及运营商共享地址 `100.64.0.0/10` | 🟢 直连 |
 | 已收录的境外 AI、Google、开发平台和境外服务 | 🔵 使用首页节点 |
 | Apple、Microsoft 的全球服务 | 🔵 使用首页节点 |
-| Apple 推送、校时、证书检查；中国区 iCloud、App Store、世纪互联与 Azure 中国 | 🟢 直连 |
+| Apple 推送、校时、证书检查；中国区 iCloud、App Store、世纪互联与 Azure 中国；`cn.pool.ntp.org` 与 Windows 更新 | 🟢 直连 |
 | 未命中更早规则的已有 CN 目标 IP | 🟢 按客户端 GeoIP 数据库直连 |
 | 其余未匹配流量 | 🔵 使用首页节点 |
 

@@ -4,18 +4,18 @@
 
 面向中国大陆日常网络的 Shadowrocket（小火箭）分流配置：国内服务优先直连，境外服务使用你选择的节点。规则已内置，无需运行脚本或安装证书。
 
-[⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.1/Shadowrocket-CN-Smart-v1.0.1.conf) · [返回项目首页](../README.md)
+[⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.2/Shadowrocket-CN-Smart-v1.0.2.conf) · [返回项目首页](../README.md)
 
 > **开始前：**需要已安装的 Shadowrocket 和自己的可用节点。本项目只提供分流规则，不提供节点、订阅或服务器账号。
 >
-> 本教程以 **macOS 上的 Shadowrocket 2.2.92** 界面为例，配置版本为 **v1.0.1**。其他系统或客户端版本的入口可能不同。
+> 本教程以 **macOS 上的 Shadowrocket 2.2.92** 界面为例，配置版本为 **v1.0.2**。其他系统或客户端版本的入口可能不同。
 
 ## 01 · 下载 .conf 文件
 
-点击上方下载链接，将文件保存到本地。也可以从 [Release 页面](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.1) 下载同名附件：
+点击上方下载链接，将文件保存到本地。也可以从 [Release 页面](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.2) 下载同名附件：
 
 ```text
-Shadowrocket-CN-Smart-v1.0.1.conf
+Shadowrocket-CN-Smart-v1.0.2.conf
 ```
 
 文件约 1.2 MB，规则已内置。普通用户只需要这个文件，无需下载整个仓库或 Source code 压缩包。保存后确认扩展名是 `.conf`，而不是 `.txt` 或 `.html`。
@@ -79,7 +79,7 @@ Shadowrocket-CN-Smart-v1.0.1.conf
 
 **更新方式：**下载新版本文件，重新导入并确认启用。建议先保留上一版本，方便需要时切回。离线规则不会自动获取上游更新，规则更新随项目版本发布。
 
-当前为 **v1.0.1**，适用于具备 IPv4 连接的网络。配置负责流量分流：境外流量使用首页节点，代理流量的 QUIC 会关闭并改走 TCP，国内直连仍可使用 QUIC。节点的网络类型、系统语言和时区不由本文件改变。请自行准备可用节点；目标服务的地区及账号要求由对应服务商决定。
+当前为 **v1.0.2**，适用于具备 IPv4 连接的网络。配置负责流量分流：境外流量使用首页节点，代理流量的 QUIC 会关闭并改走 TCP，国内直连仍可使用 QUIC。节点的网络类型、系统语言和时区不由本文件改变。请自行准备可用节点；目标服务的地区及账号要求由对应服务商决定。
 
 ## 反馈与贡献
 
@@ -89,6 +89,6 @@ Shadowrocket-CN-Smart-v1.0.1.conf
 
 ---
 
-教程更新：2026-10-25。独立社区项目，与 Shadowrocket 官方无隶属关系。
+教程更新：2026-11-03。独立社区项目，与 Shadowrocket 官方无隶属关系。
 
 另附 [HTML 排版版](index.html)：与 `images` 目录一起保存后，可在浏览器中打开；GitHub 文件页仅显示 HTML 源码。
