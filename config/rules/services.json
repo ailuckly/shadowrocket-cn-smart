@@ -1,0 +1,336 @@
+[
+  {
+    "slug": "gemini",
+    "policy": "Gemini",
+    "comment": "Gemini（独立分组，支持一键切至自动排除香港的 Gemini可用 组）",
+    "rules": [
+      "DOMAIN-SUFFIX,gemini.google.com",
+      "DOMAIN-SUFFIX,aistudio.google.com",
+      "DOMAIN-SUFFIX,ai.google.dev",
+      "DOMAIN-SUFFIX,generativelanguage.googleapis.com",
+      "DOMAIN-SUFFIX,makersuite.google.com",
+      "DOMAIN-SUFFIX,bard.google.com",
+      "DOMAIN-SUFFIX,generativeai.google",
+      "DOMAIN-SUFFIX,deepmind.com",
+      "DOMAIN-SUFFIX,deepmind.google",
+      "DOMAIN-SUFFIX,notebooklm.google.com",
+      "DOMAIN-SUFFIX,notebooklm.google",
+      "DOMAIN-SUFFIX,labs.google",
+      "DOMAIN,alkalimakersuite-pa.clients6.google.com",
+      "DOMAIN,proactivebackend-pa.googleapis.com"
+    ]
+  },
+  {
+    "slug": "ai",
+    "policy": "AI",
+    "comment": "AI 服务、Apple Intelligence 与 Copilot",
+    "rules": [
+      "DOMAIN-SUFFIX,openai.com",
+      "DOMAIN-SUFFIX,chatgpt.com",
+      "DOMAIN-SUFFIX,oaistatic.com",
+      "DOMAIN-SUFFIX,oaiusercontent.com",
+      "DOMAIN-SUFFIX,sora.com",
+      "DOMAIN-SUFFIX,anthropic.com",
+      "DOMAIN-SUFFIX,claude.ai",
+      "DOMAIN-SUFFIX,claude.com",
+      "DOMAIN-SUFFIX,x.ai",
+      "DOMAIN-SUFFIX,grok.com",
+      "DOMAIN-SUFFIX,perplexity.ai",
+      "DOMAIN-SUFFIX,perplexity.com",
+      "DOMAIN-SUFFIX,poe.com",
+      "DOMAIN-SUFFIX,cursor.com",
+      "DOMAIN-SUFFIX,cursor.sh",
+      "DOMAIN-SUFFIX,cursorapi.com",
+      "DOMAIN-SUFFIX,windsurf.com",
+      "DOMAIN-SUFFIX,codeium.com",
+      "DOMAIN-SUFFIX,githubcopilot.com",
+      "DOMAIN,copilot.microsoft.com",
+      "DOMAIN,copilot.bing.com",
+      "DOMAIN-SUFFIX,apple-relay.akamaized.net",
+      "DOMAIN-SUFFIX,apple-relay.apple.com",
+      "DOMAIN-SUFFIX,apple-relay.cloudflare.com",
+      "DOMAIN-SUFFIX,apple-relay.fastly-edge.com",
+      "DOMAIN-SUFFIX,apple-relay.mask.apple-dns.net",
+      "DOMAIN-SUFFIX,openrouter.ai",
+      "DOMAIN-SUFFIX,huggingface.co",
+      "DOMAIN-SUFFIX,hf.co",
+      "DOMAIN-SUFFIX,midjourney.com",
+      "DOMAIN-SUFFIX,suno.com",
+      "DOMAIN-SUFFIX,elevenlabs.io"
+    ]
+  },
+  {
+    "slug": "youtube",
+    "policy": "YouTube",
+    "comment": "YouTube 视频与媒体流",
+    "rules": [
+      "DOMAIN-SUFFIX,youtube.com",
+      "DOMAIN-SUFFIX,youtu.be",
+      "DOMAIN-SUFFIX,googlevideo.com",
+      "DOMAIN-SUFFIX,ytimg.com",
+      "DOMAIN-SUFFIX,ggpht.com",
+      "DOMAIN,youtubei.googleapis.com"
+    ]
+  },
+  {
+    "slug": "netflix",
+    "policy": "Netflix",
+    "comment": "Netflix 流媒体",
+    "rules": [
+      "DOMAIN-SUFFIX,netflix.com",
+      "DOMAIN-SUFFIX,netflix.net",
+      "DOMAIN-SUFFIX,nflxext.com",
+      "DOMAIN-SUFFIX,nflximg.com",
+      "DOMAIN-SUFFIX,nflximg.net",
+      "DOMAIN-SUFFIX,nflxso.net",
+      "DOMAIN-SUFFIX,nflxvideo.net",
+      "DOMAIN-SUFFIX,fast.com"
+    ]
+  },
+  {
+    "slug": "disney",
+    "policy": "Disney+",
+    "comment": "Disney+ 流媒体",
+    "rules": [
+      "DOMAIN-SUFFIX,disneyplus.com",
+      "DOMAIN-SUFFIX,disney-plus.net",
+      "DOMAIN-SUFFIX,bamgrid.com",
+      "DOMAIN-SUFFIX,dssott.com",
+      "DOMAIN-SUFFIX,disneystreaming.com"
+    ]
+  },
+  {
+    "slug": "max",
+    "policy": "Max",
+    "comment": "Max (HBO)",
+    "rules": [
+      "DOMAIN-SUFFIX,max.com",
+      "DOMAIN-SUFFIX,hbomax.com",
+      "DOMAIN-SUFFIX,hbomaxcdn.com",
+      "DOMAIN-SUFFIX,hbo.com",
+      "DOMAIN-SUFFIX,litix.io",
+      "DOMAIN-SUFFIX,discomax.com",
+      "DOMAIN-SUFFIX,brightline.tv"
+    ]
+  },
+  {
+    "slug": "tiktok",
+    "policy": "TikTok",
+    "comment": "TikTok 国际版",
+    "rules": [
+      "DOMAIN-SUFFIX,tiktok.com",
+      "DOMAIN-SUFFIX,tiktokv.com",
+      "DOMAIN-SUFFIX,tiktokcdn.com",
+      "DOMAIN-SUFFIX,tiktokcdn-us.com",
+      "DOMAIN-SUFFIX,musical.ly",
+      "DOMAIN-SUFFIX,byteoversea.com",
+      "DOMAIN-SUFFIX,ibytedtos.com",
+      "DOMAIN-SUFFIX,ibyteimg.com",
+      "DOMAIN-SUFFIX,ipstatp.com",
+      "DOMAIN-SUFFIX,muscdn.com",
+      "DOMAIN-SUFFIX,sgpstatp.com",
+      "DOMAIN-SUFFIX,tik-tokapi.com"
+    ]
+  },
+  {
+    "slug": "spotify",
+    "policy": "Spotify",
+    "comment": "Spotify 音乐",
+    "rules": [
+      "DOMAIN-SUFFIX,spotify.com",
+      "DOMAIN-SUFFIX,scdn.co",
+      "DOMAIN-SUFFIX,spotifycdn.com",
+      "DOMAIN-SUFFIX,spoti.fi",
+      "DOMAIN-SUFFIX,pscdn.co"
+    ]
+  },
+  {
+    "slug": "telegram",
+    "policy": "Telegram",
+    "comment": "Telegram（含官方直连 IP 段）",
+    "rules": [
+      "DOMAIN-SUFFIX,telegram.org",
+      "DOMAIN-SUFFIX,telegram.me",
+      "DOMAIN-SUFFIX,t.me",
+      "DOMAIN-SUFFIX,tdesktop.com",
+      "DOMAIN-SUFFIX,telegra.ph",
+      "DOMAIN-SUFFIX,telesco.pe",
+      "DOMAIN-SUFFIX,tg.dev",
+      "DOMAIN-SUFFIX,tx.me",
+      "IP-CIDR,91.105.192.0/23,no-resolve",
+      "IP-CIDR,91.108.4.0/22,no-resolve",
+      "IP-CIDR,91.108.8.0/22,no-resolve",
+      "IP-CIDR,91.108.12.0/22,no-resolve",
+      "IP-CIDR,91.108.16.0/22,no-resolve",
+      "IP-CIDR,91.108.20.0/22,no-resolve",
+      "IP-CIDR,91.108.56.0/22,no-resolve",
+      "IP-CIDR,149.154.160.0/20,no-resolve",
+      "IP-CIDR,185.76.151.0/24,no-resolve"
+    ]
+  },
+  {
+    "slug": "twitter",
+    "policy": "Twitter",
+    "comment": "Twitter / X",
+    "rules": [
+      "DOMAIN-SUFFIX,x.com",
+      "DOMAIN-SUFFIX,twitter.com",
+      "DOMAIN-SUFFIX,twimg.com",
+      "DOMAIN-SUFFIX,t.co",
+      "DOMAIN-SUFFIX,twttr.com",
+      "DOMAIN-SUFFIX,tweetdeck.com"
+    ]
+  },
+  {
+    "slug": "facebook",
+    "policy": "Facebook",
+    "comment": "Meta / Facebook / Instagram / WhatsApp",
+    "rules": [
+      "DOMAIN-SUFFIX,facebook.com",
+      "DOMAIN-SUFFIX,fb.com",
+      "DOMAIN-SUFFIX,fbcdn.net",
+      "DOMAIN-SUFFIX,fbsbx.com",
+      "DOMAIN-SUFFIX,instagram.com",
+      "DOMAIN-SUFFIX,cdninstagram.com",
+      "DOMAIN-SUFFIX,whatsapp.com",
+      "DOMAIN-SUFFIX,whatsapp.net",
+      "DOMAIN-SUFFIX,threads.net",
+      "DOMAIN-SUFFIX,messenger.com",
+      "DOMAIN-SUFFIX,meta.com"
+    ]
+  },
+  {
+    "slug": "paypal",
+    "policy": "PayPal",
+    "comment": "PayPal 支付",
+    "rules": [
+      "DOMAIN-SUFFIX,paypal.com",
+      "DOMAIN-SUFFIX,paypalobjects.com",
+      "DOMAIN-SUFFIX,paypal.me"
+    ]
+  },
+  {
+    "slug": "amazon",
+    "policy": "Amazon",
+    "comment": "Amazon 国际",
+    "rules": [
+      "DOMAIN-SUFFIX,amazon.com",
+      "DOMAIN-SUFFIX,amazon.co.jp",
+      "DOMAIN-SUFFIX,amazon.co.uk",
+      "DOMAIN-SUFFIX,amazon.de",
+      "DOMAIN-SUFFIX,amzn.to",
+      "DOMAIN-SUFFIX,media-amazon.com",
+      "DOMAIN-SUFFIX,ssl-images-amazon.com",
+      "DOMAIN-SUFFIX,primevideo.com"
+    ]
+  },
+  {
+    "slug": "gaming",
+    "policy": "游戏平台",
+    "comment": "Steam / Epic / PlayStation / Nintendo / Xbox / EA / Blizzard / Riot",
+    "rules": [
+      "DOMAIN-SUFFIX,steampowered.com",
+      "DOMAIN-SUFFIX,steamcommunity.com",
+      "DOMAIN-SUFFIX,steamstatic.com",
+      "DOMAIN-SUFFIX,steamgames.com",
+      "DOMAIN-SUFFIX,epicgames.com",
+      "DOMAIN-SUFFIX,unrealengine.com",
+      "DOMAIN-SUFFIX,playstation.com",
+      "DOMAIN-SUFFIX,playstation.net",
+      "DOMAIN-SUFFIX,sonyentertainmentnetwork.com",
+      "DOMAIN-SUFFIX,nintendo.com",
+      "DOMAIN-SUFFIX,nintendo.net",
+      "DOMAIN-SUFFIX,xbox.com",
+      "DOMAIN-SUFFIX,xboxlive.com",
+      "DOMAIN-SUFFIX,ea.com",
+      "DOMAIN-SUFFIX,ubisoft.com",
+      "DOMAIN-SUFFIX,battle.net",
+      "DOMAIN-SUFFIX,blizzard.com",
+      "DOMAIN-SUFFIX,riotgames.com"
+    ]
+  },
+  {
+    "slug": "google",
+    "policy": "谷歌服务",
+    "comment": "Google 全球服务",
+    "rules": [
+      "DOMAIN-SUFFIX,google.com",
+      "DOMAIN-SUFFIX,google.cn",
+      "DOMAIN-SUFFIX,googleapis.com",
+      "DOMAIN-SUFFIX,googleapis.cn",
+      "DOMAIN-SUFFIX,gstatic.com",
+      "DOMAIN-SUFFIX,gstatic.cn",
+      "DOMAIN-SUFFIX,googleusercontent.com",
+      "DOMAIN-SUFFIX,google.dev",
+      "DOMAIN-SUFFIX,gvt1.com",
+      "DOMAIN-SUFFIX,gvt2.com",
+      "DOMAIN-SUFFIX,gmail.com",
+      "DOMAIN-SUFFIX,android.com",
+      "DOMAIN-SUFFIX,chrome.com",
+      "DOMAIN-SUFFIX,chromium.org",
+      "DOMAIN-SUFFIX,firebaseio.com",
+      "DOMAIN-SUFFIX,withgoogle.com",
+      "DOMAIN-SUFFIX,goo.gl"
+    ]
+  },
+  {
+    "slug": "microsoft",
+    "policy": "微软服务",
+    "comment": "Microsoft 全球服务（世纪互联与 Azure 中国已前置直连）",
+    "rules": [
+      "DOMAIN-SUFFIX,microsoft.com",
+      "DOMAIN-SUFFIX,microsoftonline.com",
+      "DOMAIN-SUFFIX,bing.com",
+      "DOMAIN-SUFFIX,bing.com.cn",
+      "DOMAIN-SUFFIX,live.com",
+      "DOMAIN-SUFFIX,outlook.com",
+      "DOMAIN-SUFFIX,office.com",
+      "DOMAIN-SUFFIX,office365.com",
+      "DOMAIN-SUFFIX,sharepoint.com",
+      "DOMAIN-SUFFIX,onedrive.com",
+      "DOMAIN-SUFFIX,msn.com",
+      "DOMAIN-SUFFIX,windows.com",
+      "DOMAIN-SUFFIX,windows.net",
+      "DOMAIN-SUFFIX,azure.com",
+      "DOMAIN-SUFFIX,azureedge.net",
+      "DOMAIN-SUFFIX,visualstudio.com",
+      "DOMAIN-SUFFIX,skype.com",
+      "DOMAIN-SUFFIX,msedge.net",
+      "DOMAIN-SUFFIX,aka.ms"
+    ]
+  },
+  {
+    "slug": "apple",
+    "policy": "苹果服务",
+    "comment": "Apple 全球服务（中国区 iCloud/App Store/高德地图/Apple Pay 已前置直连）",
+    "rules": [
+      "DOMAIN-SUFFIX,apple.com",
+      "DOMAIN-SUFFIX,icloud.com",
+      "DOMAIN-SUFFIX,icloud-content.com",
+      "DOMAIN-SUFFIX,cdn-apple.com",
+      "DOMAIN-SUFFIX,aaplimg.com",
+      "DOMAIN-SUFFIX,mzstatic.com",
+      "DOMAIN-SUFFIX,apple-cloudkit.com",
+      "DOMAIN-SUFFIX,apple-livephotoskit.com",
+      "DOMAIN-SUFFIX,apple-mapkit.com",
+      "DOMAIN-SUFFIX,me.com",
+      "DOMAIN-SUFFIX,mac.com"
+    ]
+  },
+  {
+    "slug": "bilibili",
+    "policy": "哔哩哔哩",
+    "comment": "哔哩哔哩国内版（默认直连，看港澳台番剧可切港/台；海外版 bilibili.tv/biliintl.com 走 PROXY）",
+    "rules": [
+      "DOMAIN-SUFFIX,bilibili.com",
+      "DOMAIN-SUFFIX,biliapi.com",
+      "DOMAIN-SUFFIX,biliapi.net",
+      "DOMAIN-SUFFIX,bilivideo.com",
+      "DOMAIN-SUFFIX,bilivideo.net",
+      "DOMAIN-SUFFIX,hdslb.com",
+      "DOMAIN-SUFFIX,b23.tv",
+      "DOMAIN-SUFFIX,acg.tv",
+      "DOMAIN-SUFFIX,acgvideo.com"
+    ]
+  }
+]

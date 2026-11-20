@@ -1,108 +1,152 @@
 <div align="center">
 
-# 🚀 Shadowrocket CN Smart
+# Shadowrocket CN Smart
 
-**国内直连 · 境外代理 · 一个文件，轻松导入**
+**为中国大陆设计的 Shadowrocket 分流配置**<br>
+<sub>A precise, leak-resistant Shadowrocket profile for mainland China</sub>
 
-[![检查](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml/badge.svg)](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml)
-[![版本](https://img.shields.io/badge/version-1.0.2-blue?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases/tag/v1.0.2)
-![模式](https://img.shields.io/badge/Shadowrocket-配置模式-2684FF?style=flat-square)
-[![许可证](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)](LICENSE)
+[![Check](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml/badge.svg)](https://github.com/ailuckly/shadowrocket-cn-smart/actions/workflows/check.yml)
+[![Release](https://img.shields.io/badge/release-v2.0.0-1f6feb?style=flat-square)](https://github.com/ailuckly/shadowrocket-cn-smart/releases)
+[![License](https://img.shields.io/badge/license-GPL--3.0-555?style=flat-square)](LICENSE)
 
-### [⬇ 下载配置文件](https://github.com/ailuckly/shadowrocket-cn-smart/releases/download/v1.0.2/Shadowrocket-CN-Smart-v1.0.2.conf)
-
-[图文教程](docs/README.md) · [查看配置](Shadowrocket-CN-Smart-v1.0.2.conf) · [版本记录](https://github.com/ailuckly/shadowrocket-cn-smart/releases) · [反馈问题](https://github.com/ailuckly/shadowrocket-cn-smart/issues)
+[简体中文](#简体中文) · [English](#english)
 
 </div>
-
-面向中国大陆日常使用的 **Shadowrocket 分流配置**。规则已内置，下载一个 `.conf` 即可导入，无需运行脚本、安装证书或另外下载规则集。
-
-> **生效条件：在 Shadowrocket 中启用本文件，并将「首页 → 全局路由」设为「配置」。** 本文描述的分流策略用于**配置模式**，不是全局代理模式。
->
-> 本项目不提供节点。请先在首页添加并选中自己的可用节点；Shadowsocks 等节点仍由 Shadowrocket 首页管理，本文件不包含服务器账号或密码。
-
-## ✨ 三步开始
-
-1. **下载**：点击上方按钮，保存 `.conf` 文件。
-2. **导入**：在 Shadowrocket 的「配置」页导入并启用该文件。
-3. **连接**：首页选择可用节点，将全局路由设为 **配置**，开启连接。
-
-普通用户只需要根目录中的一个 `.conf`，无需下载整个仓库。
-
-固定地址不随版本变化：`https://github.com/ailuckly/shadowrocket-cn-smart/releases/latest/download/Shadowrocket-CN-Smart.conf`。把下面的链接复制到 Safari 打开，即可交给 Shadowrocket 导入。导入后在配置页更新这一条，不用重新导入。
-
-[shadowrocket://config/add/https%3A%2F%2Fgithub.com%2Failuckly%2Fshadowrocket-cn-smart%2Freleases%2Flatest%2Fdownload%2FShadowrocket-CN-Smart.conf](shadowrocket://config/add/https%3A%2F%2Fgithub.com%2Failuckly%2Fshadowrocket-cn-smart%2Freleases%2Flatest%2Fdownload%2FShadowrocket-CN-Smart.conf)
-
-带版本号的文件是该版本的快照。要换成另一版时，下载那个文件并重新导入。建议保留上一版，方便切回。
-
-## 🧭 它会怎样分流？
-
-| 流量 | 策略 |
-| --- | --- |
-| 已收录的国内网站、支付、社交、视频及国内 AI 服务；未被更早规则命中的 `.cn` | 🟢 直连 |
-| 局域网设备、本地域名，以及运营商共享地址 `100.64.0.0/10` | 🟢 直连 |
-| 已收录的境外 AI、Google、开发平台和境外服务 | 🔵 使用首页节点 |
-| Apple、Microsoft 的全球服务 | 🔵 使用首页节点 |
-| Apple 推送、校时、证书检查；中国区 iCloud、App Store、世纪互联与 Azure 中国；`cn.pool.ntp.org` 与 Windows 更新 | 🟢 直连 |
-| 未命中更早规则的已有 CN 目标 IP | 🟢 按客户端 GeoIP 数据库直连 |
-| 其余未匹配流量 | 🔵 使用首页节点 |
-
-规则按顺序匹配：**本地网络 → 必要基础服务 → 境外域名 → 国内域名 → CN IP → 代理兜底**。不自动更换节点或出口地区；修改首页节点即可统一切换代理出口。
-
-## 🛠 默认配置有哪些优点？本项目补充了什么？
-
-Shadowrocket 默认配置提供常用域名分流、局域网旁路和兜底策略。本项目沿用这些基础，按国内直连、境外服务代理的目标补充规则。
-
-| 默认配置的基础能力 | 本项目的保留或补充 |
-| --- | --- |
-| 常用域名规则、CN GeoIP 与最终代理兜底 | 保留分层结构，扩充国内/境外域名覆盖；GeoIP 使用 `no-resolve`，不为匹配它额外解析未知域名 |
-| 局域网旁路与私有 IP 直连 | 保留本地通信能力，补充本地域名和地址范围 |
-| Apple Intelligence、Copilot 等专用代理规则 | 扩充境外 AI、登录及开发服务，统一跟随首页节点 |
-| 节点不支持 UDP 时拒绝转发 | 保留，不设置代理 UDP 自动直连回退；代理流量关闭 QUIC，国内直连仍可使用 QUIC |
-| 系统 DNS 与 IPv6 支持，方便适配系统环境 | 本项目改为分离的代理/直连 DoH，默认面向具备 IPv4 连接的网络 |
-
-以上对照以 **Shadowrocket 2.2.92 随应用提供的 `default.conf`** 为基准，其他版本可能不同。本项目不是官方配置：已收录的全球 Apple、Microsoft 服务优先代理，会比偏向这些服务直连的配置消耗更多节点流量。Apple 推送、校时和证书检查，以及中国区 iCloud、App Store、世纪互联和 Azure 中国保持直连。
-
-### 本项目额外提供
-
-- **单文件离线规则**：约 1.2 MB，导入后不依赖远程规则下载；更新随新版本发布。
-- **分离 DNS**：默认/备用 DoH 经首页节点，国内直连与节点引导使用国内 DoH，本地域名交给系统处理。
-- **可复现版本**：固定规则来源、校验快照并检查生成结果；每次发布使用独立文件名。
-- **轻量使用方式**：没有复杂策略组、重写脚本或 HTTPS 解密设置，只做分流。
-
-## 🤝 规则来源与致谢
-
-| 来源 | 本项目使用的内容 |
-| --- | --- |
-| [Shadowrocket](https://apps.apple.com/us/app/shadowrocket/id932747118) | 参考随应用提供的默认配置结构与基础策略 |
-| [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat) | 当前直接采用的国内、境外、Apple 和 Microsoft 域名快照 |
-| [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) | 经 MetaCubeX 的 geo-lite 集合引用的国内基础规则来源 |
-| [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community)、[Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat) | 上游域名分类与数据生态 |
-
-域名数据由上游社区维护；本项目负责策略编排、必要域名补充、格式转换、去重与验证。详细来源、许可与构建方法统一放在 [维护目录](.maintainer/README.md)，不影响直接下载使用。
-
-## 📌 使用说明
-
-适用于具备 IPv4 连接的网络，在 Shadowrocket 的 **配置模式** 下生效。请自行准备可用节点，并在客户端打开「禁用 STUN」。系统或浏览器不要另外指定 DNS，53 端口上的查询由本文件接管。
-
-境外流量的出口就是首页当前节点。配置文件只决定分流，不改变该节点的网络类型，也不修改系统语言或时区。目标服务的地区及账号要求由对应服务商决定。
-
-离线规则随项目版本更新。用固定地址导入的，在 App 的配置页更新即可。带版本号的文件要换版时，下载后重新导入。
-
-## 💬 反馈与贡献
-
-- **使用中遇到问题？** 欢迎 [提交 Issue](https://github.com/ailuckly/shadowrocket-cn-smart/issues/new)，附上配置版本、Shadowrocket 版本、目标域名、实际表现及期望的分流策略。
-- **想补充规则或改进教程？** 欢迎 Fork 项目并 [提交 PR](https://github.com/ailuckly/shadowrocket-cn-smart/pulls)，说明修改内容与适用场景；构建方式见 [维护目录](.maintainer/README.md)。
-- **觉得有帮助？** 欢迎点亮 ⭐，让更多人发现这个项目。
-
-规则修正、域名补充和文档改进，都欢迎一起参与。**请勿在 Issue、PR 或截图中公开节点密码、订阅链接或完整访问日志。**
 
 ---
 
-<div align="center">
+## 简体中文
 
-如果这个配置对你有帮助，欢迎点亮 ⭐，也欢迎提交规则修正。
+国内流量直连，境外流量代理，DNS 全程加密。规则由上游社区数据清洗后自动构建，四个版本共用同一套规则，并经离线回归测试验证分流结果一致。
 
-本项目原创部分使用 [GPL-3.0](LICENSE)；第三方数据保留其来源与许可。与 Shadowrocket 官方无隶属关系。
+### 特性
 
-</div>
+- **精细分流**：中国区 iCloud、App Store 下载、Apple Pay、地图、世纪互联与 Azure 中国、Windows 更新、Steam 下载直连；全球 Apple、Microsoft、Google 与 AI 服务走代理。
+- **DNS 防泄露**：默认 DoH 经代理发出，国内域名使用国内 DoH，节点域名单独引导解析；劫持 53 端口，代理流量禁用 QUIC。
+- **数据清洗**：自动剔除上游混入国内列表的查 IP 站、海外版应用与 PT 站；规则冲突在构建时报错。
+- **两种形态**：离线版单文件内置 3.3 万条规则；在线版内联不到 200 条，大表通过 `DOMAIN-SET` 加载，内存占用更低。
+- **模块解耦**：去广告、HttpDNS 拦截与企业 VPN 共存均为独立模块，主配置无需安装证书。
+
+### 版本
+
+| 版本 | 体积 | 说明 | 链接 |
+| --- | --- | --- | --- |
+| 在线版 · 推荐 | 10 KB | 低内存，规则随仓库更新 | [Online](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Online.conf) |
+| 在线策略组版 | 16 KB | 另含 26 个策略组，可为 AI、流媒体等单独选节点 | [Group-Online](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Group-Online.conf) |
+| 离线版 | 1.15 MB | 规则全部内置，无远程依赖 | [Offline](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Offline.conf) |
+| 离线策略组版 | 1.15 MB | 离线 + 26 个策略组 | [Group-Offline](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Group-Offline.conf) |
+
+文件名依次为 `Shadowrocket-CN-Smart-Online.conf`、`Shadowrocket-CN-Smart-Group-Online.conf`、`Shadowrocket-CN-Smart-Offline.conf`、`Shadowrocket-CN-Smart-Group-Offline.conf`。策略组版刚导入时，除哔哩哔哩默认直连外，其余分组都跟随首页节点。
+
+### 快速开始
+
+1. 复制上表中的链接，在 Shadowrocket **配置 → `+`** 中粘贴下载，点击该配置选择 **使用配置**。
+2. 回到首页选择节点，将 **全局路由** 设为 **配置**（即配置模式，不要选代理或直连）。
+3. 在设置中开启 **禁用 STUN**，然后连接。
+
+完整图文步骤见 [导入指南](docs/README.md)。本项目不提供任何节点、订阅或证书。
+
+### 分流顺序
+
+```text
+0  本机私有规则（可选 Overlay）
+1  局域网与保留地址                       → DIRECT
+2  中国区 Apple / 微软 / Steam 下载等例外  → DIRECT
+3  AI、Google、GitHub 等核心境外服务       → PROXY 或对应策略组
+4  境外域名表（含全球 Apple / 微软）       → PROXY
+5  国内域名表与 .cn                        → DIRECT
+6  其余域名经代理 DoH 解析后 GEOIP,CN      → DIRECT
+7  FINAL                                   → PROXY
+```
+
+### 模块
+
+在 **配置 → 模块 → `+`** 中按需添加：
+
+| 模块 | 证书 | 用途 |
+| --- | --- | --- |
+| [`adblock-dns`](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/modules/adblock-dns.module) | 不需要 | 域名级拦截广告联盟、移动广告 SDK 与追踪域名 |
+| [`adblock-mitm`](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/modules/adblock-mitm.module) | 需要本机自签 | 改写 B站、知乎、微博的开屏广告接口，见[说明](docs/modules.md) |
+| [`block-httpdns`](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/modules/block-httpdns.module) | 不需要 | 拦截常见 HttpDNS，让 App 回到标准 DNS |
+| [`corporate-vpn-template`](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/modules/corporate-vpn-template.module) | 不需要 | macOS 上与企业 VPN 共存的模板，见[指南](docs/corporate-vpn.md) |
+
+### 已知限制
+
+- 未收录的域名由 `GEOIP,CN` 兜底。境外 DoH 按节点位置返回结果，同时有海外 CDN 的国内网站可能走代理，欢迎提 Issue 补充。
+- 需要网页认证的公共 Wi-Fi 可能无法弹出认证页，先暂停 Shadowrocket 完成认证即可。
+- iOS 同一时间只允许一个 VPN，开启企业 VPN 会断开 Shadowrocket。
+- 在线版规则托管于本仓库 `main` 分支；上游每周自动同步并生成 PR，审核合并后在 App 内刷新即可更新。
+- Release 中的 `Shadowrocket-CN-Smart.conf` 与离线版内容一致，供 v1.x 旧链接继续更新。
+
+### 开发
+
+需要 Python 3.9+，无第三方依赖。
+
+```sh
+python3 scripts/build.py                     # 由 config/ 与 data/ 生成 rules/ 与 dist/
+python3 scripts/build.py --check             # 校验生成文件是否最新
+python3 -m unittest discover -s tests        # 离线回归测试
+python3 scripts/sync_upstream.py             # 同步上游快照（CI 每周一执行）
+python3 scripts/build.py --profile host-conf/profile.json   # 生成本机私有配置
+```
+
+`host-conf/` 已被 Git 忽略，用于存放公司 VPN、内网域名等私有信息。提交 Issue 或截图时请隐去节点、订阅与内网地址。
+
+---
+
+## English
+
+Domestic traffic goes direct, everything else goes through your proxy, and DNS stays encrypted end to end. Rules are built automatically from cleaned community data; all four editions share one rule base and are verified by offline regression tests to route identically.
+
+### Features
+
+- **Precise routing**: China-region iCloud, App Store downloads, Apple Pay, Maps, 21Vianet / Azure China, Windows Update and Steam downloads go direct; global Apple, Microsoft, Google and AI services go through the proxy.
+- **DNS leak protection**: default DoH is sent through the proxy, domestic domains use domestic DoH, and node hostnames have a separate bootstrap resolver; port 53 is hijacked and QUIC is blocked for proxied traffic.
+- **Cleaned data**: IP-check sites, overseas app variants and private trackers wrongly listed as Chinese upstream are removed; rule conflicts fail the build.
+- **Two forms**: offline editions embed 33k+ rules in one file; online editions inline fewer than 200 rules and load large lists via `DOMAIN-SET` for a smaller memory footprint.
+- **Decoupled modules**: ad blocking, HttpDNS blocking and corporate VPN coexistence are separate modules; the main profile needs no certificate.
+
+### Editions
+
+| Edition | Size | Notes |
+| --- | --- | --- |
+| [Online](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Online.conf) · recommended | 10 KB | Low memory, rules update with the repository |
+| [Group-Online](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Group-Online.conf) | 16 KB | Adds 26 policy groups for per-service node selection |
+| [Offline](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Offline.conf) | 1.15 MB | All rules embedded, no remote dependencies |
+| [Group-Offline](https://raw.githubusercontent.com/ailuckly/shadowrocket-cn-smart/main/dist/Shadowrocket-CN-Smart-Group-Offline.conf) | 1.15 MB | Offline plus 26 policy groups |
+
+### Quick start
+
+1. Copy a link above, paste it in Shadowrocket under **Config → `+`**, then select **Use Config**.
+2. Pick a node on the home screen and set **Global Routing** to **Config**.
+3. Enable **Disable STUN** in settings, then connect.
+
+This project ships routing rules and modules only. It contains no nodes, subscriptions, keys or certificates.
+
+### Known limitations
+
+- Unlisted domains fall back to `GEOIP,CN`. Because DoH answers reflect the node's location, Chinese sites that also have overseas CDNs may be proxied. Issues are welcome.
+- Captive-portal Wi-Fi may not show its login page; pause Shadowrocket, sign in, then reconnect.
+- iOS allows only one active VPN, so a corporate VPN will disconnect Shadowrocket.
+
+### Development
+
+Python 3.9+, no third-party dependencies.
+
+```sh
+python3 scripts/build.py && python3 scripts/build.py --check
+python3 -m unittest discover -s tests
+```
+
+---
+
+## 规则来源与许可 · Sources & License
+
+| 来源 Source | 用途 Usage | 许可 License |
+| --- | --- | --- |
+| [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat) | 国内、境外、Apple、Microsoft 域名快照 | GPL-3.0 |
+| [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) | 经 MetaCubeX geo-lite 引用 | [GPL-2.0](data/LICENSES/blackmatrix7-GPL-2.0.txt) |
+| [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community) | 上游域名分类 | [MIT](data/LICENSES/v2fly-MIT.txt) |
+
+项目自身的模板、模块、脚本与文档以 [GPL-3.0](LICENSE) 发布，上游数据保留原始署名与许可。本项目与 Shadowrocket 官方无关。<br>
+<sub>Original templates, modules, scripts and docs are released under GPL-3.0; upstream data keeps its original attribution and license. Not affiliated with Shadowrocket.</sub>

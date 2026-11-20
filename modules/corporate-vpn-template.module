@@ -1,0 +1,32 @@
+#!name=企业 VPN 共存模板 (请复制后替换为你的公司信息)
+#!desc=解决 macOS 开启 Shadowrocket 后 EasyConnect / AnyConnect / GlobalProtect 等企业 VPN 无法连接或内网域名打不开的问题。详见 docs/corporate-vpn.md。
+#!author=shadowrocket-cn-smart
+
+# 使用方法：
+# 1. 下载本文件到本地，把下方的示例 IP 和内网域名替换为你自己公司的真实信息（切勿上传到公开仓库）。
+# 2. 在 Shadowrocket「配置 → 模块」中导入你修改后的本地模块并启用。
+#
+# 需要替换的 4 个占位示例（以下均为 RFC 5737 / RFC 2606 文档专用占位值）：
+# - 203.0.113.10/32    → 替换为公司 VPN 服务器的公网网关 IP（避免双 TUN 隧道套隧道）
+# - 192.168.50.10/32   → 替换为公司内网服务真实 IP（或整个公司内网段，如 10.20.0.0/16）
+# - intranet.example   → 替换为公司内网域名（如 jira.corp / oa.internal）
+# - 10.0.0.53          → 若有公司内网 DNS，可把内网后缀指向 server:公司DNS
+
+[General]
+skip-proxy = %APPEND% intranet.example, *.corp.example
+tun-excluded-routes = %APPEND% 203.0.113.10/32
+always-real-ip = %APPEND% intranet.example, *.corp.example
+
+[Rule]
+# 企业 VPN 公网网关必须直连
+IP-CIDR,203.0.113.10/32,DIRECT,no-resolve
+# 企业内网域名与网段直连
+DOMAIN,intranet.example,DIRECT
+DOMAIN-SUFFIX,corp.example,DIRECT
+IP-CIDR,192.168.50.10/32,DIRECT,no-resolve
+
+[Host]
+# 方式 A：固定内网域名到真实内网 IP（避免返回 198.18.x.x Fake-IP）
+intranet.example = 192.168.50.10
+# 方式 B：将整个企业内网域名后缀交给公司内网 DNS 解析（按需取消注释并替换 IP）
+# *.corp.example = server:10.0.0.53

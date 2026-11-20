@@ -1,0 +1,80 @@
+name: Sync Upstream Rules
+
+on:
+  schedule:
+    # 每周一北京时间 12:00（UTC 04:00）自动拉取上游并校验
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "更新方式：pr（推荐，自动提 PR 审核）或 direct（直接提交到 main）"
+        required: true
+        default: "pr"
+        type: choice
+        options:
+          - pr
+          - direct
+
+# 前置条件：仓库 Settings → Actions → General → Workflow permissions 勾选
+# “Allow GitHub Actions to create and approve pull requests”，否则 gh pr create 会失败。
+# 注意：用 GITHUB_TOKEN 创建的 PR 不会再触发 check.yml，本工作流已在提交前自行跑完构建校验与全部测试。
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Fetch latest upstream snapshots
+        run: python3 scripts/sync_upstream.py
+
+      - name: Rebuild rules/ and dist/
+        run: python3 scripts/build.py
+
+      - name: Verify reproducibility & run full tests
+        run: |
+          python3 scripts/build.py --check
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Direct commit to main (when mode=direct)
+        if: steps.diff.outputs.changed == 'true' && inputs.mode == 'direct'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/sources.json data/ rules/ dist/
+          git commit -m "chore(rules): sync upstream rules snapshot"
+          git push origin main
+
+      - name: Create or update Pull Request (default safe mode)
+        if: steps.diff.outputs.changed == 'true' && inputs.mode != 'direct'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="chore/sync-upstream-rules"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add config/sources.json data/ rules/ dist/
+          git commit -m "chore(rules): sync upstream rules snapshot"
+          git push --force origin "$BRANCH"
+          if gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number' | grep -q '[0-9]'; then
+            echo "Updated existing PR on $BRANCH"
+          else
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore(rules): 自动同步上游规则并完成校验" \
+              --body "本 PR 由定时工作流自动生成：已拉取最新 MetaCubeX 上游规则、执行脏数据清洗、重建 \`rules/\` 与 \`dist/\` 全量配置，并通过全部离线回归测试。审核 diff 无误后即可合并。"
+          fi

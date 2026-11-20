@@ -1,0 +1,52 @@
+{
+  "direct_single_labels": [
+    "cn",
+    "baidu",
+    "yun",
+    "xihuan",
+    "shouji",
+    "anquan",
+    "sohu"
+  ],
+  "proxy_cn_keep": [
+    "bing.com.cn"
+  ],
+  "direct_excluded_domains": [
+    "in.th",
+    "whatismyip.com",
+    "bilibili.tv",
+    "biliintl.com",
+    "byteintl.net",
+    "m-team.cc",
+    "empornium.me",
+    "hdbits.org",
+    "passthepopcorn.me",
+    "animebytes.tv",
+    "animetorrents.me",
+    "awesome-hd.me",
+    "broadcasthe.net",
+    "redacted.ch",
+    "gazellegames.net",
+    "privatehd.to",
+    "morethan.tv",
+    "jpopsuki.eu",
+    "myanonamouse.net",
+    "classix-unlimited.co.uk",
+    "icetorrent.org",
+    "worldbank.org",
+    "imf.org",
+    "aip.org",
+    "mpg.de",
+    "uni-bielefeld.de",
+    "weather.com",
+    "abercrombie.com",
+    "hollisterco.com",
+    "tawk.to",
+    "tawk.link",
+    "api.crisp.chat",
+    "analytics.strava.com",
+    "origin-a.akamaihd.ne",
+    "ip.istatmenus.app",
+    "bjango.com"
+  ]
+}

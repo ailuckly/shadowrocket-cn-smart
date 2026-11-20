@@ -1,0 +1,15 @@
+# 高频国内 .com/.net 补充（确保走国内 DoH 获取最优 CDN，避免落入 GeoIP 二次查询）
+DOMAIN-SUFFIX,icbc.com.cn,DIRECT
+DOMAIN-SUFFIX,vivo.com,DIRECT
+DOMAIN-SUFFIX,dewu.com,DIRECT
+DOMAIN-SUFFIX,poizon.com,DIRECT
+DOMAIN-SUFFIX,volcengine.com,DIRECT
+DOMAIN-SUFFIX,larkoffice.com,DIRECT
+DOMAIN-SUFFIX,stepfun.com,DIRECT
+DOMAIN-SUFFIX,xpeng.com,DIRECT
+DOMAIN-SUFFIX,xiaomiev.com,DIRECT
+DOMAIN-SUFFIX,hypergryph.com,DIRECT
+DOMAIN-SUFFIX,kurogame.com,DIRECT
+DOMAIN-SUFFIX,dingxiangyuan.com,DIRECT
+DOMAIN-SUFFIX,ecovacs.com,DIRECT
+DOMAIN-SUFFIX,dot.pub,DIRECT

@@ -1,0 +1,38 @@
+#!name=CN Smart 进阶去广告 (HTTPS MITM)
+#!desc=通过 URL Rewrite 拦截常见 App 开屏广告与网页广告接口。需在 Shadowrocket「配置 → HTTPS 解密」中自行生成并信任本地 CA 证书；本模块不包含任何私钥或证书。
+#!author=shadowrocket-cn-smart
+
+# 使用前请按步骤在设备本地启用 HTTPS 解密（详细图文见 docs/modules.md）：
+# 1. Shadowrocket → 配置 → 点击当前配置右侧 ⓘ → HTTPS 解密 → 开启「HTTPS 解密」。
+# 2. 点击「证书 → 生成新的 CA 证书 → 安装证书」。
+# 3. iOS：系统设置 → 已下载描述文件 → 安装；再进入 通用 → 关于本机 → 证书信任设置 → 信任该证书。
+# 4. macOS：钥匙串访问 → 找到 Shadowrocket 证书 → 信任 → 使用此证书时选择「始终信任」。
+# 安全说明：以下 hostname 为 B站/知乎/微博的业务 API 主机，开启后这些主机的全部 HTTPS 请求（含登录 Cookie/Token）
+# 都会在本机被 Shadowrocket 解密后再转发，URL Rewrite 只改写其中的广告接口。证书私钥只存在于你的设备。
+# 不解密银行、支付域名。若某 App 启用证书固定（pinning）导致整体无法联网，关闭本模块即可。
+
+[Rule]
+# 常见开屏/广告域名补充拦截
+DOMAIN-SUFFIX,doubleclick.net,REJECT
+DOMAIN-SUFFIX,googleadservices.com,REJECT
+DOMAIN-SUFFIX,googlesyndication.com,REJECT
+DOMAIN-SUFFIX,pangolin-sdk-toutiao.com,REJECT
+DOMAIN-SUFFIX,gdt.qq.com,REJECT
+DOMAIN-SUFFIX,mobads.baidu.com,REJECT
+
+[URL Rewrite]
+# 哔哩哔哩开屏与推广广告接口
+^https?:\/\/app\.bilibili\.com\/x\/v2\/splash\/(list|show|event) - reject-dict
+# 知乎开屏广告接口
+^https?:\/\/api\.zhihu\.com\/commercial_api\/real_time_launch_v2 - reject-dict
+^https?:\/\/api\.zhihu\.com\/appcloud2\/v1\/launch - reject-dict
+# 微博开屏与卡片广告接口
+^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkad\.php - reject-200
+^https?:\/\/wbapp\.uve\.weibo\.com\/wbapplua\/wbpullad\.lua - reject-200
+# 百度网页/搜索广告脚本
+^https?:\/\/cpro\.baidustatic\.com\/ - reject
+^https?:\/\/pos\.baidu\.com\/ - reject
+# Google / DoubleClick 已由上方 [Rule] 整域 REJECT，无需解密。
+
+[MITM]
+hostname = %APPEND% app.bilibili.com, api.zhihu.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, cpro.baidustatic.com, pos.baidu.com

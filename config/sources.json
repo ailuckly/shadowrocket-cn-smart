@@ -1,7 +1,10 @@
 {
-  "version": "1.0.2",
-  "date": "2026-11-03",
+  "version": "2.0.0",
+  "date": "2026-11-20",
+  "project_repo": "ailuckly/shadowrocket-cn-smart",
+  "project_branch": "main",
   "repository": "https://github.com/MetaCubeX/meta-rules-dat",
+  "upstream_branch": "meta",
   "revision": "45a9c7f0489f8b1c7c3ae09192e2a6caa369a265",
   "license": "GPL-3.0",
   "files": [
