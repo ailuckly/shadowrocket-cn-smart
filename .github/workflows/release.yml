@@ -35,10 +35,23 @@ jobs:
           cp dist/Shadowrocket-CN-Smart-Offline.conf release-assets/Shadowrocket-CN-Smart.conf
           cp modules/*.module release-assets/
 
-      - name: Create GitHub Release
+      - name: Create or update GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" release-assets/* \
-            --title "Shadowrocket CN Smart ${GITHUB_REF_NAME}" \
-            --generate-notes
+          # 优先使用 .github/releases/<tag>.md 作为发版说明，没有时由 GitHub 自动生成
+          notes=".github/releases/${GITHUB_REF_NAME}.md"
+          if [ -f "$notes" ]; then
+            notes_args=(--notes-file "$notes")
+          else
+            notes_args=(--generate-notes)
+          fi
+          title="Shadowrocket CN Smart ${GITHUB_REF_NAME}"
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" release-assets/* --clobber
+            if [ -f "$notes" ]; then
+              gh release edit "$GITHUB_REF_NAME" --title "$title" --notes-file "$notes"
+            fi
+          else
+            gh release create "$GITHUB_REF_NAME" release-assets/* --title "$title" "${notes_args[@]}"
+          fi

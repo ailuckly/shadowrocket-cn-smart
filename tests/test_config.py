@@ -143,6 +143,7 @@ class ConfigV2Tests(unittest.TestCase):
         self.assertIn("Shadowrocket-CN-Smart-Group-Online.conf", readme)
         for doc in [
             "README.md",
+            "README.en.md",
             "docs/README.md",
             "docs/modules.md",
             "docs/corporate-vpn.md",
